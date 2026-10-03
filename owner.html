@@ -187,6 +187,7 @@ function render() {
       <td><span class="chip ${cls}">${st}</span></td>
       <td><div class="acts">
         ${l.locked ? `<button class="btn sm" data-a="unlock" data-id="${l.id}">Unlock</button>` : `<button class="btn sm danger" data-a="lock" data-id="${l.id}">Lock</button>`}
+        <button class="btn sm gold" data-a="days" data-id="${l.id}">Muddat set</button>
         <button class="btn sm" data-a="m1" data-id="${l.id}">+1 mahina</button>
         <button class="btn sm" data-a="y1" data-id="${l.id}">+1 saal</button>
         <button class="btn sm" data-a="date" data-id="${l.id}">Tareekh</button>
@@ -223,6 +224,24 @@ $("#schTable").onclick = e => {
     m.querySelector("#mOk").onclick = () => { save({ locked: true, message: m.querySelector("#mMsg").value.trim() }, "School lock ho gaya"); closeModal(); };
   }
   if (a === "view") viewSchool(l);
+  if (a === "days") {
+    const P = [["2 din", 2], ["7 din", 7], ["15 din", 15], ["1 mahina", 30], ["2 mahine", 60], ["3 mahine", 90], ["6 mahine", 180], ["1 saal", 365]];
+    const cur = l.life ? "Lifetime" : l.validUntil ? fmt(l.validUntil.toMillis()) + " tak" : "—";
+    const m = modal(`<h3>Muddat set karein — ${esc(l.schoolName)}</h3>
+      <p class="muted" style="margin:0 0 10px">Abhi: <b>${cur}</b>. Yahan se muddat <b>aaj se</b> nayi lagti hai (purani muddat hat jati hai, kam bhi ho sakti hai).</p>
+      <div class="acts" id="dQuick" style="margin-bottom:12px">${P.map(([t, d]) => `<button class="btn sm" data-d="${d}">${t}</button>`).join("")}</div>
+      <label class="field"><span>Ya khud din likhein (aaj se)</span><input class="input" type="number" min="1" id="dN" value="30"></label>
+      <label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="dAdd"> <span style="margin:0">Aaj se nahi — mojooda muddat ke <b>upar jama</b> karein</span></label>
+      <p class="muted" id="dPrev" style="font-size:.88rem"></p>
+      <div class="acts" style="justify-content:flex-end"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk">Save</button></div>`);
+    const nIn = m.querySelector("#dN"), add = m.querySelector("#dAdd");
+    const endFor = () => { const n = Math.max(1, Math.round(Number(nIn.value) || 0)); const from = add.checked ? Math.max(Date.now(), l.life ? 0 : (l.validUntil?.toMillis?.() || 0)) : Date.now(); const e = new Date(from + n * DAY); e.setHours(23, 59, 0, 0); return { n, end: e.getTime() }; };
+    const prev = () => { const { n, end } = endFor(); m.querySelector("#dPrev").textContent = `${n} din — ${fmt(end)} tak chalega${l.life ? " (Lifetime khatam ho jayega)" : ""}.`; };
+    m.querySelector("#dQuick").onclick = e => { const b = e.target.closest("button[data-d]"); if (!b) return; nIn.value = b.dataset.d; prev(); };
+    nIn.oninput = prev; add.onchange = prev; prev();
+    m.querySelector("#mX").onclick = closeModal;
+    m.querySelector("#mOk").onclick = () => { const { n, end } = endFor(); save({ validUntil: Timestamp.fromMillis(end), life: false, type: n <= 15 ? "trial" : n >= 365 ? "year" : "period" }, `Muddat ${fmt(end)} tak set ho gayi`); closeModal(); };
+  }
   if (a === "reset") askWipe(l, false);
   if (a === "del") askWipe(l, true);
   if (a === "unlock") save({ locked: false, message: "" }, "School unlock ho gaya");
