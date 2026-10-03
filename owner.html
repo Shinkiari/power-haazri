@@ -7,76 +7,132 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{--ink:#1B2A4A;--ink2:#2C3E66;--gold:#E8A33D;--gold2:#F6D9A6;--paper:#F3F5FA;--line:#DCE2EE;--text:#1E2940;--muted:#66728A;--ok:#2F8F5B;--okbg:#E4F3EA;--late:#B57A0E;--latebg:#FBF0D9;--bad:#C2453D;--badbg:#F8E4E2;font-family:'Lexend',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+<style>:root{--ink:#16233F;--ink2:#2C3E66;--gold:#E8A33D;--gold2:#F6D9A6;--paper:#F2F4F9;--line:#E1E6F0;--text:#1A2540;--muted:#69758C;--ok:#22875A;--okbg:#E2F4EA;--late:#B07408;--latebg:#FCF1DA;--bad:#C2453D;--badbg:#FBE6E4;--blue:#2F6FDB;--bluebg:#E6EFFD;--r:16px;font-family:'Lexend',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
 *{box-sizing:border-box}html,body{margin:0}
-body{background:var(--paper);color:var(--text);font-size:15px;line-height:1.5;font-variant-numeric:tabular-nums}
+body{background:var(--paper);color:var(--text);font-size:15px;line-height:1.5;font-variant-numeric:tabular-nums;-webkit-text-size-adjust:100%}
 button,input,select,textarea{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 [hidden]{display:none!important}
 h1,h2,h3{margin:0;font-weight:600;line-height:1.2}
-header{background:var(--ink);color:#fff;padding:calc(16px + env(safe-area-inset-top,0px)) 22px 16px;display:flex;align-items:center;gap:12px}
-header svg{width:36px;height:36px;flex:none}
-header b{display:block}header small{opacity:.7;font-size:.8rem}
-header button{margin-left:auto}
-main{max-width:1100px;margin:0 auto;padding:20px 16px 60px}
-.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px}
-.card h3{font-size:1rem;margin-bottom:12px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
-.stats div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
-.stats b{display:block;font-size:1.5rem;font-weight:600}
-.stats span{font-size:.8rem;color:var(--muted)}
-.btn{border:1px solid var(--line);background:#fff;padding:8px 13px;border-radius:8px;cursor:pointer;font-weight:500;white-space:nowrap}
-.btn:hover{border-color:var(--ink2)}
-.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
-.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:600}
-.btn.danger{color:var(--bad)}
-.btn.sm{padding:4px 9px;font-size:.82rem}
-.input{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:#fff}
-.field{display:block;margin-bottom:12px}.field>span{display:block;font-size:.82rem;color:var(--muted);margin-bottom:3px}
+.brandlogo{display:block;flex:none}.brandlogo svg,.brandlogo img{width:100%;height:100%;display:block}.brandlogo img{object-fit:contain;border-radius:22%;background:#fff}
+/* header */
+.hero{background:radial-gradient(1200px 300px at 85% -40%,rgba(232,163,61,.28),transparent 60%),linear-gradient(135deg,#1E3160,#121C33);color:#fff;padding:calc(18px + env(safe-area-inset-top,0px)) 0 74px}
+.hero-in{max-width:1140px;margin:0 auto;padding:0 18px;display:flex;align-items:center;gap:14px}
+.hero .brandlogo{width:52px;height:52px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.25))}
+.hero .bn b{display:block;font-size:1.15rem;letter-spacing:.01em}
+.hero .bn span{font-size:.8rem;opacity:.72}
+.hero .sp{flex:1}
+.hbtn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.85rem;font-weight:500;display:inline-flex;align-items:center;gap:6px}
+.hbtn:hover{background:rgba(255,255,255,.18)}
+.hbtn svg{width:16px;height:16px}
+.who{font-size:.78rem;opacity:.7;margin-right:4px}
+.hero h1{max-width:1140px;margin:22px auto 0;padding:0 18px;font-size:1.5rem;font-weight:500}
+.hero h1 b{color:var(--gold2);font-weight:600}
+main{max-width:1140px;margin:-52px auto 0;padding:0 18px 60px}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.stats>div{background:#fff;border-radius:var(--r);padding:16px 18px;box-shadow:0 8px 24px rgba(22,35,63,.08);display:flex;gap:12px;align-items:center;border:1px solid rgba(225,230,240,.7)}
+.stats i{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;font-style:normal}
+.stats i svg{width:21px;height:21px}
+.stats b{display:block;font-size:1.45rem;font-weight:600;line-height:1.15}
+.stats span{font-size:.78rem;color:var(--muted)}
+.i1{background:var(--bluebg);color:var(--blue)}.i2{background:var(--okbg);color:var(--ok)}.i3{background:var(--latebg);color:var(--late)}.i4{background:#F1E8FB;color:#7A45C2}
+/* cards */
+.card{background:#fff;border:1px solid rgba(225,230,240,.9);border-radius:var(--r);padding:20px 22px;margin-bottom:18px;box-shadow:0 2px 8px rgba(22,35,63,.04)}
+.card h3{font-size:1.02rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.chead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.chead h3{margin:0;flex:1}
+.btn{border:1px solid var(--line);background:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:500;white-space:nowrap;transition:background .15s,border-color .15s}
+.btn:hover{border-color:#B9C3D8;background:#FAFBFD}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}.btn.primary:hover{background:var(--ink2)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#1A2540;font-weight:600}.btn.gold:hover{background:#F0B04F}
+.btn.soft{background:var(--bluebg);border-color:transparent;color:var(--blue)}
+.btn.danger{color:var(--bad)}.btn.danger:hover{background:var(--badbg);border-color:#F0C6C2}
+.btn.sm{padding:5px 10px;font-size:.8rem;border-radius:8px}
+.input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.input:focus{border-color:#9FB0D3;outline:none;box-shadow:0 0 0 3px rgba(47,111,219,.12)}
+.field{display:block;margin-bottom:12px}.field>span{display:block;font-size:.8rem;color:var(--muted);margin-bottom:4px}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0 12px}
 .seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.seg button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 14px;cursor:pointer;font-weight:500}
+.seg button{border:1px solid var(--line);background:#fff;border-radius:22px;padding:6px 15px;cursor:pointer;font-weight:500;font-size:.88rem}
 .seg button.on{background:var(--ink);border-color:var(--ink);color:#fff}
-.keybox{background:var(--paper);border:1px dashed var(--ink2);border-radius:10px;padding:14px;margin-top:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.keybox code{font-size:1.35rem;font-weight:600;letter-spacing:.08em;flex:1}
+.keybox{background:linear-gradient(135deg,#FFF8EA,#FDF1D8);border:1px dashed var(--gold);border-radius:12px;padding:14px 16px;margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.keybox code{font-size:1.35rem;font-weight:600;letter-spacing:.08em;flex:1;color:var(--ink)}
+.search{flex:1 1 220px;max-width:300px}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:4px 12px;font-size:.8rem;cursor:pointer;color:var(--muted)}
+.filters button.on{background:var(--ink);border-color:var(--ink);color:#fff}
 .tablewrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.88rem}
-th{text-align:left;font-weight:500;color:var(--muted);padding:7px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
-td{padding:9px;border-bottom:1px solid #EEF1F7;vertical-align:top}
+th{text-align:left;font-weight:500;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+td{padding:12px 10px;border-bottom:1px solid #EEF1F7;vertical-align:top}
 tr:last-child td{border:0}
-.chip{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.76rem;font-weight:500;white-space:nowrap}
+#schTable tr:hover td{background:#FAFBFE}
+.sname{display:flex;gap:10px;align-items:center}
+.sav{width:38px;height:38px;border-radius:11px;flex:none;display:grid;place-items:center;font-weight:600;color:#fff;font-size:.9rem;background:linear-gradient(135deg,#2C3E66,#16233F)}
+.chip{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:500;white-space:nowrap}
 .c-ok{background:var(--okbg);color:var(--ok)}.c-warn{background:var(--latebg);color:var(--late)}.c-bad{background:var(--badbg);color:var(--bad)}.c-grey{background:#EDF0F6;color:var(--muted)}
-.acts{display:flex;gap:5px;flex-wrap:wrap}
+.acts{display:flex;gap:5px;flex-wrap:wrap;max-width:430px}
+.acts .grp{display:flex;gap:5px;flex-wrap:wrap;width:100%}
 .muted{color:var(--muted)}
-.login{min-height:100vh;display:grid;place-items:center;background:var(--ink);padding:20px}
-.login .card{max-width:360px;width:100%;text-align:center;padding:30px 24px}
-.err{background:var(--badbg);color:var(--bad);border-radius:8px;padding:9px 12px;font-size:.86rem;margin-top:12px}
-.modal{position:fixed;inset:0;background:rgba(18,26,46,.55);display:grid;place-items:center;padding:16px;z-index:50}
-.mbox{background:#fff;border-radius:12px;max-width:460px;width:100%;padding:20px 22px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:8px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60}
+/* login */
+.login{min-height:100vh;display:grid;place-items:center;background:radial-gradient(900px 400px at 80% -10%,rgba(232,163,61,.3),transparent 60%),linear-gradient(135deg,#1E3160,#0F1830);padding:20px}
+.login .card{max-width:380px;width:100%;text-align:center;padding:34px 28px;box-shadow:0 30px 60px rgba(0,0,0,.3);border:0}
+.login .brandlogo{width:84px;height:84px;margin:0 auto 14px}
+.login h2{font-size:1.3rem}
+.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px}
+.err{background:var(--badbg);color:var(--bad);border-radius:10px;padding:9px 12px;font-size:.86rem;margin-top:12px}
+.foot{text-align:center;color:var(--muted);font-size:.78rem;padding:10px 0 0}
+.modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,24,48,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:16px;z-index:50}
+.mbox{background:#fff;border-radius:18px;max-width:460px;width:100%;padding:22px 24px;box-shadow:0 30px 70px rgba(0,0,0,.3)}
+.mbox h3{margin-bottom:10px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:12px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60;box-shadow:0 10px 30px rgba(0,0,0,.25)}
 .toast.show{opacity:1}
-@media (max-width:760px){.stats,.g4{grid-template-columns:1fr 1fr}}
+.lgprev{width:84px;height:84px;border-radius:18px;border:1px solid var(--line);padding:6px;background:#fff}
+@media (max-width:860px){.stats{grid-template-columns:1fr 1fr}.g4{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){
+  .hero{padding-bottom:64px}.hero .brandlogo{width:44px;height:44px}.hero .bn b{font-size:1rem;white-space:nowrap}.hero .bn span{font-size:.72rem;white-space:nowrap}.hero-in{gap:10px}.hero h1{font-size:1.2rem;margin-top:16px}.who{display:none}.hbtn .t{display:none}
+  .stats{gap:10px}.stats>div{padding:12px;gap:10px}.stats i{width:36px;height:36px}.stats b{font-size:1.15rem}
+  .card{padding:16px}.g4{grid-template-columns:1fr}
+  #schTable,#schTable tbody,#schTable tr,#schTable td{display:block;width:100%}
+  #schTable tr:first-child{display:none}
+  #schTable tr{border:1px solid var(--line);border-radius:14px;padding:6px 4px;margin-bottom:12px}
+  #schTable td{border:0;padding:6px 10px}
+  #schTable td[data-l]:before{content:attr(data-l);display:block;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .acts{max-width:none}
+}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="logo" viewBox="0 0 48 48"><circle cx="24" cy="24" r="23" fill="#E8A33D"/><path d="M24 7l4.6 11.2L40.5 19l-9.1 7.7 2.9 11.8L24 32.1l-10.3 6.4 2.9-11.8L7.5 19l11.9-.8z" fill="#1B2A4A"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="ptg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34508A"/><stop offset="1" stop-color="#121C33"/></linearGradient><linearGradient id="ptb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE29A"/><stop offset="1" stop-color="#E8A33D"/></linearGradient></defs><symbol id="logo" viewBox="0 0 48 48"><circle cx="24" cy="24" r="23" fill="#E8A33D"/><path d="M24 7l4.6 11.2L40.5 19l-9.1 7.7 2.9 11.8L24 32.1l-10.3 6.4 2.9-11.8L7.5 19l11.9-.8z" fill="#1B2A4A"/></symbol></svg>
 
 <div id="login" class="login"><div class="card">
-  <svg style="width:56px;height:56px"><use href="#logo"/></svg>
-  <h2 style="margin:12px 0 4px">Power Haazri — Owner</h2>
-  <p class="muted" style="margin:0 0 18px">Sirf Power Technology ke liye</p>
-  <button class="btn primary" id="gBtn" style="width:100%">Google se login</button>
+  <span class="brandlogo" data-blogo><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="17" fill="url(#ptg)"/><circle cx="32" cy="32" r="21" fill="none" stroke="#E8A33D" stroke-opacity=".35" stroke-width="2"/><circle cx="32" cy="32" r="14" fill="none" stroke="#FFFFFF" stroke-opacity=".08" stroke-width="6"/><path d="M36 9 18 35h12l-3 20 19-28H34z" fill="url(#ptb)"/></svg></span>
+  <h2 data-bname>Power Technology</h2>
+  <p class="muted" style="margin:4px 0 22px">Power Haazri — Owner panel</p>
+  <button class="btn primary gbtn" id="gBtn"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="#fff" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z" opacity=".9"/><path fill="#fff" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z" opacity=".75"/><path fill="#fff" d="M6.4 14c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3.1a10 10 0 0 0 0 9.2z" opacity=".6"/><path fill="#fff" d="M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.4L6.4 10C7.2 7.7 9.4 5.9 12 5.9z" opacity=".85"/></svg>Google se login</button>
+  <p class="foot">Sirf shinkiari45@gmail.com · 0310-5802297</p>
   <div class="err" id="lErr" hidden></div>
 </div></div>
 
 <div id="app" hidden>
-  <header><svg><use href="#logo"/></svg><div><b>Power Haazri — Owner panel</b><small id="who"></small></div><button class="btn sm" id="out">Logout</button></header>
+  <div class="hero">
+    <div class="hero-in">
+      <span class="brandlogo" data-blogo><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="17" fill="url(#ptg)"/><circle cx="32" cy="32" r="21" fill="none" stroke="#E8A33D" stroke-opacity=".35" stroke-width="2"/><circle cx="32" cy="32" r="14" fill="none" stroke="#FFFFFF" stroke-opacity=".08" stroke-width="6"/><path d="M36 9 18 35h12l-3 20 19-28H34z" fill="url(#ptb)"/></svg></span>
+      <div class="bn"><b data-bname>Power Technology</b><span>Power Haazri · Owner panel</span></div>
+      <span class="sp"></span>
+      <span class="who" id="who"></span>
+      <button class="hbtn" id="brandBtn" title="Logo aur naam badlein"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span class="t">Brand</span></button>
+      <button class="hbtn" id="out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 16l-4-4 4-4M6 12h9"/></svg><span class="t">Logout</span></button>
+    </div>
+    <h1 id="greet">Assalam o Alaikum 👋</h1>
+  </div>
   <main>
     <div class="stats" id="stats"></div>
 
     <div class="card">
-      <h3>Activation key banayein</h3>
+      <h3><span class="dot"></span>Activation key banayein</h3>
       <div class="seg" id="seg">
         <button data-t="trial" data-d="7" class="on">Trial</button>
         <button data-t="period" data-d="30">Muqarrar muddat</button>
@@ -94,18 +150,20 @@ tr:last-child td{border:0}
     </div>
 
     <div class="card">
-      <h3>Schools</h3>
+      <div class="chead"><h3><span class="dot"></span>Schools</h3><input class="input search" id="sSearch" placeholder="School, ID ya email talash karein"></div>
+      <div class="filters" id="sFilt" style="margin-bottom:12px"><button class="on" data-f="all">Sab</button><button data-f="ok">Chalu</button><button data-f="warn">Jald khatam / mohlat</button><button data-f="bad">Khatam / band</button></div>
       <div class="tablewrap"><table id="schTable"></table></div>
     </div>
 
     <div class="card">
-      <h3>Keys</h3>
+      <h3><span class="dot"></span>Keys</h3>
       <div class="tablewrap"><table id="keyTable"></table></div>
     </div>
   </main>
 </div>
 <div id="modal" class="modal" hidden><div class="mbox" id="mbox"></div></div>
 <div id="toast" class="toast"></div>
+<p class="foot" style="padding-bottom:24px">© Power Technology, Shinkiari · 0310-5802297 · 0333-9764399</p>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -130,7 +188,43 @@ function modal(html) { $("#mbox").style.cssText = ""; $("#mbox").innerHTML = htm
 const closeModal = () => { $("#modal").hidden = true; };
 $("#modal").onclick = e => { if (e.target.id === "modal") closeModal(); };
 
-let schools = [], keys = [], unsubs = [], curType = "trial";
+let schools = [], keys = [], unsubs = [], curType = "trial", sFilter = "all";
+$("#sSearch").oninput = () => render();
+$("#sFilt").onclick = e => { const b = e.target.closest("button[data-f]"); if (!b) return; sFilter = b.dataset.f; [...$("#sFilt").children].forEach(x => x.classList.toggle("on", x === b)); render(); };
+/* Brand: logo + naam (Firestore meta/brand, aur login screen ke liye local cache) */
+const DEFAULT_LOGO = document.querySelector("[data-blogo]").innerHTML;
+let brand = (() => { try { return JSON.parse(localStorage.getItem("pt_brand") || "{}"); } catch (e) { return {}; } })();
+function paintBrand() {
+  document.querySelectorAll("[data-blogo]").forEach(el => { el.innerHTML = brand.logo ? `<img src="${brand.logo}" alt="">` : DEFAULT_LOGO; });
+  document.querySelectorAll("[data-bname]").forEach(el => { el.textContent = brand.name || "Power Technology"; });
+  try { localStorage.setItem("pt_brand", JSON.stringify(brand)); } catch (e) {}
+}
+paintBrand();
+async function shrinkImg(file) {
+  if (!file || !/^image\//.test(file.type)) throw new Error("Sirf tasveer chunein");
+  const url = await new Promise((r, j) => { const f = new FileReader(); f.onload = () => r(f.result); f.onerror = j; f.readAsDataURL(file); });
+  const img = await new Promise((r, j) => { const i = new Image(); i.onload = () => r(i); i.onerror = () => j(new Error("Tasveer nahi khuli")); i.src = url; });
+  const sc = Math.min(1, 256 / Math.max(img.width, img.height)), c = document.createElement("canvas");
+  c.width = Math.max(1, Math.round(img.width * sc)); c.height = Math.max(1, Math.round(img.height * sc));
+  c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); return c.toDataURL("image/png");
+}
+$("#brandBtn").onclick = () => {
+  let lg = brand.logo || "";
+  const m = modal(`<h3>Brand — logo aur naam</h3><p class="muted" style="margin:0 0 14px;font-size:.88rem">Yeh owner panel aur login screen par nazar aata hai.</p>
+    <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px"><span class="brandlogo lgprev" id="bPrev"></span>
+      <div style="display:flex;flex-direction:column;gap:6px"><input type="file" accept="image/*" id="bFile" hidden><button class="btn sm" id="bPick">Naya logo chunein</button><button class="btn sm" id="bDef">Default Power Technology logo</button></div></div>
+    <label class="field"><span>Naam</span><input class="input" id="bName" value="${esc(brand.name || "Power Technology")}"></label>
+    <div class="acts" style="justify-content:flex-end;max-width:none"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk">Save</button></div>`);
+  const pv = () => { m.querySelector("#bPrev").innerHTML = lg ? `<img src="${lg}" alt="">` : DEFAULT_LOGO; }; pv();
+  m.querySelector("#bPick").onclick = () => m.querySelector("#bFile").click();
+  m.querySelector("#bFile").onchange = async e => { try { lg = await shrinkImg(e.target.files[0]); pv(); } catch (err) { toast(err.message); } };
+  m.querySelector("#bDef").onclick = () => { lg = ""; pv(); };
+  m.querySelector("#mX").onclick = closeModal;
+  m.querySelector("#mOk").onclick = async () => {
+    brand = { logo: lg, name: m.querySelector("#bName").value.trim() || "Power Technology" }; paintBrand(); closeModal();
+    try { await setDoc(doc(db, "meta", "brand"), brand); toast("Brand save ho gaya"); } catch (err) { toast("Save nahi hua: " + (err.code || err.message)); }
+  };
+};
 
 $("#gBtn").onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch(e => { $("#lErr").textContent = "Login nahi hua: " + (e.code || e.message); $("#lErr").hidden = false; });
 $("#out").onclick = () => signOut(auth);
@@ -139,6 +233,8 @@ onAuthStateChanged(auth, user => {
   if (!user) { $("#login").hidden = false; $("#app").hidden = true; return; }
   if (user.email !== OWNER_EMAIL) { $("#lErr").textContent = `Yeh panel sirf ${OWNER_EMAIL} ke liye hai.`; $("#lErr").hidden = false; signOut(auth); return; }
   $("#who").textContent = user.email; $("#login").hidden = true; $("#app").hidden = false;
+  const h = new Date().getHours(); $("#greet").innerHTML = `${h < 12 ? "Subah bakhair" : h < 17 ? "Assalam o Alaikum" : "Shaam bakhair"}, <b>${esc((user.displayName || "Nasir").split(" ")[0])}</b>`;
+  unsubs.push(onSnapshot(doc(db, "meta", "brand"), d => { if (d.exists()) { brand = d.data(); paintBrand(); } }, () => {}));
   unsubs.push(onSnapshot(collection(db, "licenses"), s => { schools = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }, e => toast("Schools load nahi hue: " + e.code)));
   unsubs.push(onSnapshot(query(collection(db, "keys"), orderBy("createdAt", "desc"), limit(200)), s => { keys = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }));
 });
@@ -176,15 +272,21 @@ function status(l) {
 function render() {
   const active = schools.filter(l => ["c-ok", "c-warn"].includes(status(l)[1])).length;
   const earned = keys.filter(k => k.used).reduce((a, k) => a + (Number(k.amount) || 0), 0);
-  $("#stats").innerHTML = `<div><b>${schools.length}</b><span>Kul schools</span></div><div><b>${active}</b><span>Chalu</span></div><div><b>${keys.filter(k => !k.used).length}</b><span>Na-istemal keys</span></div><div><b>Rs ${earned.toLocaleString()}</b><span>Kul kamai (istemal shuda keys)</span></div>`;
+  const IC = { s: '<path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/>', a: '<path d="M20 6 9 17l-5-5"/>', k: '<circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 9.2-9.2M17 6l3 3M14 9l2 2"/>', r: '<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>' };
+  const ic = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[k]}</svg>`;
+  $("#stats").innerHTML = `<div><i class="i1">${ic("s")}</i><p style="margin:0"><b>${schools.length}</b><span>Kul schools</span></p></div><div><i class="i2">${ic("a")}</i><p style="margin:0"><b>${active}</b><span>Chalu schools</span></p></div><div><i class="i3">${ic("k")}</i><p style="margin:0"><b>${keys.filter(k => !k.used).length}</b><span>Na-istemal keys</span></p></div><div><i class="i4">${ic("r")}</i><p style="margin:0"><b>Rs ${earned.toLocaleString()}</b><span>Kul kamai</span></p></div>`;
 
-  const sorted = [...schools].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  const q = ($("#sSearch").value || "").trim().toLowerCase(), F = { ok: ["c-ok"], warn: ["c-warn"], bad: ["c-bad"] }[sFilter];
+  const sorted = [...schools].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+    .filter(l => !q || [l.schoolName, l.id, l.ownerEmail, l.phone].some(v => String(v || "").toLowerCase().includes(q)))
+    .filter(l => !F || F.includes(status(l)[1]) || (sFilter === "bad" && l.locked));
   $("#schTable").innerHTML = sorted.length ? `<tr><th>School</th><th>Rabta</th><th>License</th><th>Status</th><th>Amal</th></tr>` + sorted.map(l => {
     const [st, cls] = status(l);
-    return `<tr><td><b>${esc(l.schoolName)}</b><br><span class="muted">ID: ${esc(l.id)}</span></td>
-      <td>${esc(l.ownerEmail)}<br><span class="muted">${esc(l.phone)}</span></td>
-      <td>${TYPE[l.type] || "—"}<br><span class="muted">${l.life ? "Hamesha" : l.validUntil ? fmt(l.validUntil.toMillis()) + " tak" : "—"}</span>${l.message ? `<br><span class="muted" style="font-size:.78rem">Msg: ${esc(l.message)}</span>` : ""}</td>
-      <td><span class="chip ${cls}">${st}</span></td>
+    const ini = String(l.schoolName || "S").split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+    return `<tr><td><div class="sname"><span class="sav">${esc(ini)}</span><div><b>${esc(l.schoolName)}</b><br><span class="muted" style="font-size:.8rem">ID: ${esc(l.id)}</span></div></div></td>
+      <td data-l="Rabta">${esc(l.ownerEmail)}<br><span class="muted">${esc(l.phone)}</span></td>
+      <td data-l="License">${TYPE[l.type] || "—"}<br><span class="muted">${l.life ? "Hamesha" : l.validUntil ? fmt(l.validUntil.toMillis()) + " tak" : "—"}</span>${l.message ? `<br><span class="muted" style="font-size:.78rem">Msg: ${esc(l.message)}</span>` : ""}</td>
+      <td data-l="Status"><span class="chip ${cls}">${st}</span></td>
       <td><div class="acts">
         ${l.locked ? `<button class="btn sm" data-a="unlock" data-id="${l.id}">Unlock</button>` : `<button class="btn sm danger" data-a="lock" data-id="${l.id}">Lock</button>`}
         <button class="btn sm gold" data-a="days" data-id="${l.id}">Muddat set</button>
@@ -197,7 +299,7 @@ function render() {
         <button class="btn sm danger" data-a="reset" data-id="${l.id}">Reset</button>
         <button class="btn sm danger" data-a="del" data-id="${l.id}">Delete</button>
       </div></td></tr>`;
-  }).join("") : `<tr><td class="muted">Abhi koi school register nahi hua.</td></tr>`;
+  }).join("") : `<tr><td class="muted">${schools.length ? "Is talash/filter mein koi school nahi." : "Abhi koi school register nahi hua."}</td></tr>`;
 
   const nameOf = sid => schools.find(s => s.id === sid)?.schoolName || sid;
   $("#keyTable").innerHTML = keys.length ? `<tr><th>Key</th><th>Qisam</th><th>Client</th><th>Raqam</th><th>Status</th><th></th></tr>` + keys.map(k => `<tr>
