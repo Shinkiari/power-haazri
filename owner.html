@@ -233,7 +233,7 @@ onAuthStateChanged(auth, user => {
   if (!user) { $("#login").hidden = false; $("#app").hidden = true; return; }
   if (user.email !== OWNER_EMAIL) { $("#lErr").textContent = `Yeh panel sirf ${OWNER_EMAIL} ke liye hai.`; $("#lErr").hidden = false; signOut(auth); return; }
   $("#who").textContent = user.email; $("#login").hidden = true; $("#app").hidden = false;
-  const h = new Date().getHours(); $("#greet").innerHTML = `${h < 12 ? "Subah bakhair" : h < 17 ? "Assalam o Alaikum" : "Shaam bakhair"}, <b>${esc((user.displayName || "Nasir").split(" ")[0])}</b>`;
+  const h = new Date().getHours(); $("#greet").innerHTML = `${h < 12 ? "Subah bakhair" : h < 17 ? "Assalam o Alaikum" : "Shaam bakhair"}, <b>Nasir Khan</b>`;
   unsubs.push(onSnapshot(doc(db, "meta", "brand"), d => { if (d.exists()) { brand = d.data(); paintBrand(); } }, () => {}));
   unsubs.push(onSnapshot(collection(db, "licenses"), s => { schools = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }, e => toast("Schools load nahi hue: " + e.code)));
   unsubs.push(onSnapshot(query(collection(db, "keys"), orderBy("createdAt", "desc"), limit(200)), s => { keys = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }));
