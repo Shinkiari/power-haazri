@@ -110,7 +110,7 @@ tr:last-child td{border:0}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, setDoc, updateDoc, deleteDoc, collection, query, orderBy, limit, onSnapshot, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, collection, query, where, orderBy, limit, onSnapshot, writeBatch, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = await (await fetch("./config.json", { cache: "no-store" })).json(); // config.json (isi folder mein)
 const OWNER_EMAIL = "shinkiari45@gmail.com";
@@ -126,7 +126,7 @@ const TYPE = { trial: "Trial", period: "Muddat", year: "1 saal", life: "Lifetime
 function toast(m) { const t = $("#toast"); t.textContent = m; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2800); }
 function normWa(p) { let d = String(p || "").replace(/\D/g, ""); if (d.startsWith("0")) d = "92" + d.slice(1); return d; }
 function genKey() { const c = "23456789ABCDEFGHJKMNPQRSTUVWXYZ"; const r = [...crypto.getRandomValues(new Uint8Array(12))].map(x => c[x % c.length]).join(""); return r.match(/.{4}/g).join("-"); }
-function modal(html) { $("#mbox").innerHTML = html; $("#modal").hidden = false; return $("#mbox"); }
+function modal(html) { $("#mbox").style.cssText = ""; $("#mbox").innerHTML = html; $("#modal").hidden = false; return $("#mbox"); }
 const closeModal = () => { $("#modal").hidden = true; };
 $("#modal").onclick = e => { if (e.target.id === "modal") closeModal(); };
 
@@ -192,6 +192,9 @@ function render() {
         <button class="btn sm" data-a="date" data-id="${l.id}">Tareekh</button>
         ${l.life ? "" : `<button class="btn sm" data-a="life" data-id="${l.id}">Lifetime</button>`}
         <button class="btn sm" data-a="msg" data-id="${l.id}">Message</button>
+        <button class="btn sm gold" data-a="view" data-id="${l.id}">Data dekhein</button>
+        <button class="btn sm danger" data-a="reset" data-id="${l.id}">Reset</button>
+        <button class="btn sm danger" data-a="del" data-id="${l.id}">Delete</button>
       </div></td></tr>`;
   }).join("") : `<tr><td class="muted">Abhi koi school register nahi hua.</td></tr>`;
 
@@ -219,6 +222,9 @@ $("#schTable").onclick = e => {
     m.querySelector("#mX").onclick = closeModal;
     m.querySelector("#mOk").onclick = () => { save({ locked: true, message: m.querySelector("#mMsg").value.trim() }, "School lock ho gaya"); closeModal(); };
   }
+  if (a === "view") viewSchool(l);
+  if (a === "reset") askWipe(l, false);
+  if (a === "del") askWipe(l, true);
   if (a === "unlock") save({ locked: false, message: "" }, "School unlock ho gaya");
   if (a === "m1") save({ validUntil: Timestamp.fromMillis(base + 30 * DAY), type: l.life ? "life" : "period" }, "1 mahina barh gaya");
   if (a === "y1") save({ validUntil: Timestamp.fromMillis(base + 365 * DAY), type: l.life ? "life" : "year" }, "1 saal barh gaya");
@@ -239,6 +245,56 @@ $("#schTable").onclick = e => {
     m.querySelector("#mOk").onclick = () => { save({ message: m.querySelector("#mMsg").value.trim() }, "Message save ho gaya"); closeModal(); };
   }
 };
+/* ---- School ka data dekhna ---- */
+const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+const tm = ms => ms ? new Date(ms).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }) : "";
+function csvDl(name, rows) { const t = rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\n"); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["\ufeff" + t], { type: "text/csv" })); a.download = name; a.click(); }
+async function viewSchool(l) {
+  const m = modal(`<h3>${esc(l.schoolName)}</h3><p class="muted">Data load ho raha hai…</p>`);
+  m.style.maxWidth = "960px"; m.style.maxHeight = "90vh"; m.style.overflow = "auto";
+  try {
+    const sid = l.id, sub = n => collection(db, "schools", sid, n);
+    const [sc, users, studs, att, sms] = await Promise.all([
+      getDoc(doc(db, "schools", sid)), getDocs(query(collection(db, "users"), where("schoolId", "==", sid))),
+      getDocs(sub("students")), getDocs(query(sub("attendance"), where("date", "==", today()))),
+      getDocs(query(sub("sms_queue"), orderBy("ts", "desc"), limit(40)))]);
+    const S2 = sc.data() || {}, st = studs.docs.map(d => d.data()).sort((a, b) => String(a.cls).localeCompare(String(b.cls), undefined, { numeric: true }) || String(a.name).localeCompare(String(b.name)));
+    const at = att.docs.map(d => d.data()), sm = sms.docs.map(d => d.data());
+    const cnt = k => sm.filter(x => x.status === k).length;
+    const present = at.filter(x => x.in).length, late = at.filter(x => x.status === "late").length;
+    m.innerHTML = `<div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">${S2.logo ? `<img src="${S2.logo}" style="width:48px;height:48px;object-fit:contain;border-radius:8px;border:1px solid var(--line)">` : ""}<div style="flex:1"><h3 style="margin:0">${esc(S2.schoolName || l.schoolName)}</h3><span class="muted">ID ${esc(sid)} · ${esc(S2.phone || "")} · ${esc(S2.address || "")}</span></div><button class="btn sm" id="vX">Band</button></div>
+      <div class="stats" style="margin-bottom:14px"><div><b>${st.length}</b><span>Students</span></div><div><b>${present}</b><span>Aaj aaye</span></div><div><b>${late}</b><span>Aaj late</span></div><div><b>${cnt("sent")} / ${cnt("pending") + cnt("sending")} / ${cnt("failed")}</b><span>SMS: gaye / queue / fail (aakhri 40)</span></div></div>
+      <h3>Admins</h3><div class="tablewrap"><table>${users.docs.map(d => { const u = d.data(); return `<tr><td>${esc(u.email)}</td><td>${u.role === "main" ? "Main admin" : "Admin"}</td><td class="muted">${tm(u.joinedAt)}</td></tr>`; }).join("") || `<tr><td class="muted">Koi nahi</td></tr>`}</table></div>
+      <h3 style="margin-top:14px">Aaj ki haazri (${today()})</h3><div class="tablewrap"><table><tr><th>ID</th><th>Naam</th><th>Class</th><th>Aamad</th><th>Rawangi</th><th>Status</th></tr>${at.sort((a, b) => String(a.in || "").localeCompare(String(b.in || ""))).map(x => `<tr><td>${esc(x.sid)}</td><td>${esc(x.name)}</td><td>${esc(x.cls)}</td><td>${esc(x.in || "")}</td><td>${esc(x.out || "")}</td><td>${esc(x.status || "")}</td></tr>`).join("") || `<tr><td class="muted" colspan="6">Aaj abhi koi scan nahi</td></tr>`}</table></div>
+      <h3 style="margin-top:14px">Haal hi ke SMS</h3><div class="tablewrap"><table><tr><th>Waqt</th><th>Student</th><th>Number</th><th>Qisam</th><th>Status</th></tr>${sm.map(x => `<tr><td>${tm(x.ts)}</td><td>${esc(x.name)}</td><td>${esc(x.to)}</td><td>${esc(x.type)}</td><td>${esc(x.status)}${x.error ? `<br><span class="muted" style="font-size:.78rem">${esc(x.error)}</span>` : ""}</td></tr>`).join("") || `<tr><td class="muted" colspan="5">Koi SMS nahi</td></tr>`}</table></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px"><h3 style="margin:0">Students (${st.length})</h3><button class="btn sm" id="vCsv">CSV download</button></div>
+      <div class="tablewrap"><table><tr><th>ID</th><th>Naam</th><th>Walid</th><th>Class</th><th>Parent phone</th><th>PIN</th></tr>${st.map(x => `<tr><td>${esc(x.id)}</td><td>${esc(x.name)}${x.active === false ? ' <span class="chip c-grey">band</span>' : ""}</td><td>${esc(x.father)}</td><td>${esc(x.cls)}${x.section ? "-" + esc(x.section) : ""}</td><td>${esc(x.phone)}</td><td>${esc(x.pin)}</td></tr>`).join("") || `<tr><td class="muted" colspan="6">Koi student nahi</td></tr>`}</table></div>`;
+    m.querySelector("#vX").onclick = closeModal;
+    m.querySelector("#vCsv").onclick = () => csvDl(`${sid}-students.csv`, [["id", "name", "father", "class", "section", "phone", "pin", "active"], ...st.map(x => [x.id, x.name, x.father, x.cls, x.section, x.phone, x.pin, x.active !== false ? "yes" : "no"])]);
+  } catch (e) { m.innerHTML = `<h3>Data load nahi hua</h3><p class="muted">${esc(e.code || e.message)}</p><button class="btn" id="vX">Band</button>`; m.querySelector("#vX").onclick = closeModal; }
+}
+/* ---- Reset / Delete ---- */
+async function delAll(refs) { for (let i = 0; i < refs.length; i += 400) { const b = writeBatch(db); refs.slice(i, i + 400).forEach(r => b.delete(r)); await b.commit(); } }
+async function wipe(sid, full) {
+  const refs = [];
+  for (const n of ["students", "attendance", "sms_queue", "daily"]) (await getDocs(collection(db, "schools", sid, n))).docs.forEach(d => refs.push(d.ref));
+  (await getDocs(query(collection(db, "portal"), where("schoolId", "==", sid)))).docs.forEach(d => refs.push(d.ref));
+  if (full) {
+    (await getDocs(query(collection(db, "users"), where("schoolId", "==", sid)))).docs.forEach(d => refs.push(d.ref));
+    refs.push(doc(db, "schools", sid), doc(db, "licenses", sid));
+  }
+  await delAll(refs); return refs.length;
+}
+function askWipe(l, full) {
+  const m = modal(`<h3>${full ? "School account DELETE" : "School ka data RESET"}: ${esc(l.schoolName)}</h3>
+    <p class="muted">${full ? "School, us ke admins (Gmail link), license, students, haazri, SMS aur parent portal — <b>sab kuch</b> hamesha ke liye delete. Woh Gmail dobara naya school bana sakegi." : "Students, haazri, SMS aur parent portal delete. School, settings, admins aur license rahenge."} <b>Yeh wapas nahi hoga.</b></p>
+    <label class="field"><span>Tasdeeq ke liye School ID <b>${esc(l.id)}</b> likhein</span><input class="input" id="wIn" autocomplete="off"></label>
+    <div class="acts" style="justify-content:flex-end"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk" disabled style="background:var(--bad);border-color:var(--bad)">${full ? "Delete karein" : "Reset karein"}</button></div>`);
+  const inp = m.querySelector("#wIn"), ok = m.querySelector("#mOk");
+  inp.oninput = () => { ok.disabled = inp.value.trim().toUpperCase() !== l.id.toUpperCase(); };
+  m.querySelector("#mX").onclick = closeModal;
+  ok.onclick = async () => { ok.disabled = true; ok.textContent = "Ho raha hai…"; try { const n = await wipe(l.id, full); closeModal(); toast(`${full ? "Delete" : "Reset"} ho gaya (${n} record)`); } catch (e) { closeModal(); toast("Nahi hua: " + (e.code || e.message)); } };
+}
 $("#keyTable").onclick = e => {
   const id = e.target.dataset.del; if (!id) return;
   if (confirm(`Key ${id} delete karein?`)) deleteDoc(doc(db, "keys", id)).then(() => toast("Delete ho gayi")).catch(err => toast("Nahi hui: " + err.code));
