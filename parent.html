@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B2A4A">
+<title>Parent Portal — Power Haazri</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B2A4A;--ink2:#2C3E66;--gold:#E8A33D;--gold2:#F6D9A6;--paper:#F3F5FA;--line:#DCE2EE;--text:#1E2940;--muted:#66728A;--ok:#2F8F5B;--okbg:#E4F3EA;--late:#B57A0E;--latebg:#FBF0D9;--bad:#C2453D;--badbg:#F8E4E2;font-family:'Lexend',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--paper);color:var(--text);font-size:15px;line-height:1.5;font-variant-numeric:tabular-nums;padding-bottom:env(safe-area-inset-bottom,0px)}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+[hidden]{display:none!important}
+.head{background:var(--ink);color:#fff;padding:calc(18px + env(safe-area-inset-top,0px)) 20px 70px}
+.head-in{max-width:520px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.head svg{width:40px;height:40px;flex:none}
+.head b{display:block;font-size:1rem;line-height:1.2}
+.head span{font-size:.8rem;opacity:.7}
+.head button{margin-left:auto;background:rgba(255,255,255,.1);border:0;color:#fff;padding:7px 12px;border-radius:8px;cursor:pointer;font-size:.85rem}
+.wrap{max-width:520px;margin:-52px auto 0;padding:0 14px 40px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:14px}
+h2{font-size:1.3rem;margin:0 0 4px;font-weight:600}
+h3{font-size:1rem;margin:0 0 12px;font-weight:600}
+.muted{color:var(--muted)}
+.field{display:block;margin-bottom:14px}
+.field span{display:block;font-size:.85rem;color:var(--muted);margin-bottom:4px}
+.input{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;font-size:1rem;text-transform:uppercase}
+.btn{width:100%;background:var(--ink);color:#fff;border:0;border-radius:8px;padding:12px;font-weight:500;cursor:pointer}
+.err{background:var(--badbg);color:var(--bad);border-radius:8px;padding:10px 12px;font-size:.88rem;margin-bottom:14px}
+.today{display:flex;gap:14px;align-items:center;border-radius:12px;padding:16px;margin-top:16px}
+.today .dot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:1.3rem;font-weight:600;color:#fff}
+.today b{display:block;font-size:1.05rem}
+.today.ok{background:var(--okbg)} .today.ok .dot{background:var(--ok)}
+.today.late{background:var(--latebg)} .today.late .dot{background:var(--gold)}
+.today.bad{background:var(--badbg)} .today.bad .dot{background:var(--bad)}
+.today.wait{background:#EDF0F6} .today.wait .dot{background:#9AA5BC}
+.monthbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.monthbar button{background:none;border:1px solid var(--line);border-radius:8px;width:38px;height:38px;cursor:pointer;font-size:1.1rem}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}
+.cal .dn{font-size:.72rem;color:var(--muted);padding-bottom:2px}
+.cal .d{aspect-ratio:1;border-radius:8px;display:grid;place-items:center;font-size:.88rem;background:#F6F7FB;color:var(--muted)}
+.cal .d.present{background:var(--ok);color:#fff}
+.cal .d.late{background:var(--gold);color:var(--ink)}
+.cal .d.absent{background:var(--bad);color:#fff}
+.cal .d.now{outline:2px solid var(--ink);outline-offset:1px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;text-align:center}
+.stats b{display:block;font-size:1.25rem;font-weight:600}
+.stats span{font-size:.75rem;color:var(--muted)}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #EEF1F7;font-size:.92rem}
+.list li:last-child{border:0}
+.chip{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.78rem;font-weight:500}
+.chip.present{background:var(--okbg);color:var(--ok)} .chip.late{background:var(--latebg);color:var(--late)} .chip.absent{background:var(--badbg);color:var(--bad)}
+.foot{text-align:center;font-size:.78rem;color:var(--muted);margin-top:18px}
+</style>
+</head>
+<body>
+<header class="head"><div class="head-in">
+  <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="23" fill="#E8A33D"/><path d="M24 7l4.6 11.2L40.5 19l-9.1 7.7 2.9 11.8L24 32.1l-10.3 6.4 2.9-11.8L7.5 19l11.9-.8z" fill="#1B2A4A"/></svg>
+  <div><b id="hName">Parent portal</b><span>Power Haazri</span></div>
+  <button id="out" hidden>Logout</button>
+</div></header>
+
+<main class="wrap">
+  <form class="card" id="loginCard">
+    <h2>Apne bache ki haazri dekhein</h2>
+    <p class="muted" style="margin:0 0 18px">School ki di hui slip par likha Student ID aur PIN darj karein.</p>
+    <div class="err" id="err" hidden></div>
+    <label class="field" id="schF"><span>School code</span><input class="input" id="sch" placeholder="School ki slip par likha link kholein ya code darj karein"></label>
+    <label class="field"><span>Student ID</span><input class="input" id="sid" placeholder="ABC-0001" autocomplete="username" required></label>
+    <label class="field"><span>PIN</span><input class="input" id="pin" placeholder="6 harf" autocomplete="current-password" required></label>
+    <button class="btn" id="go" type="submit">Dekhein</button>
+  </form>
+
+  <div id="view" hidden>
+    <div class="card">
+      <h2 id="vName"></h2>
+      <div class="muted" id="vMeta"></div>
+      <div id="vToday"></div>
+    </div>
+    <div class="card">
+      <div class="monthbar"><button id="prev" aria-label="Pichhla mahina">‹</button><h3 id="mLabel" style="margin:0"></h3><button id="next" aria-label="Agla mahina">›</button></div>
+      <div class="cal" id="cal"></div>
+      <div class="legend"><span><i style="background:var(--ok)"></i>Waqt par</span><span><i style="background:var(--gold)"></i>Late</span><span><i style="background:var(--bad)"></i>Absent</span></div>
+      <div class="stats" id="stats"></div>
+    </div>
+    <div class="card"><h3>Haal hi ki haazri</h3><ul class="list" id="recent"></ul></div>
+    <div class="foot" id="foot"></div>
+  </div>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = await (await fetch("./config.json", { cache: "no-store" })).json(); // config.json (isi folder mein)
+const db = getFirestore(initializeApp(firebaseConfig));
+
+const $ = s => document.querySelector(s);
+const pad = n => String(n).padStart(2, "0");
+const dkey = (d = new Date()) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const t12 = s => { if (!s) return "—"; let [h, m] = s.split(":").map(Number); const ap = h >= 12 ? "PM" : "AM"; h = h % 12 || 12; return `${h}:${pad(m)} ${ap}`; };
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const clean = s => String(s || "").trim().toUpperCase().replace(/\s+/g, "-").replace(/[\/\\#?\[\]]/g, "");
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+let unsub = null, data = null, view = new Date();
+const urlSchool = (new URLSearchParams(location.search).get("s") || "").trim().toUpperCase();
+if (urlSchool) { $("#sch").value = urlSchool; $("#schF").hidden = true; }
+view.setDate(1);
+
+function store(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
+function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+
+function open(sch, sid, pin, silent) {
+  if (unsub) unsub();
+  $("#go").disabled = true; $("#err").hidden = true;
+  unsub = onSnapshot(doc(db, "portal", `${sch}_${sid}_${pin}`), snap => {
+    $("#go").disabled = false;
+    if (!snap.exists()) { fail("Student ID ya PIN ghalat hai. Slip dobara check karein ya school se rabta karein."); return; }
+    store("ph_parent", JSON.stringify({ sch, sid, pin }));
+    data = snap.data();
+    $("#loginCard").hidden = true; $("#view").hidden = false; $("#out").hidden = false;
+    render();
+  }, () => { $("#go").disabled = false; fail("Rabta nahi ho saka. Internet check karke dobara koshish karein."); });
+  function fail(msg) { if (unsub) unsub(); unsub = null; if (silent) store("ph_parent", null); $("#err").textContent = msg; $("#err").hidden = false; logoutUi(); }
+}
+function logoutUi() { $("#loginCard").hidden = false; $("#view").hidden = true; $("#out").hidden = true; }
+
+$("#loginCard").addEventListener("submit", e => { e.preventDefault(); const sch = clean($("#sch").value); if (!sch) { $("#err").textContent = "School code darj karein."; $("#err").hidden = false; return; } open(sch, clean($("#sid").value), clean($("#pin").value).replace(/-/g, "")); });
+$("#out").onclick = () => { if (unsub) unsub(); unsub = null; store("ph_parent", null); data = null; logoutUi(); $("#hName").textContent = "Parent portal"; };
+$("#prev").onclick = () => { view.setMonth(view.getMonth() - 1); render(); };
+$("#next").onclick = () => { view.setMonth(view.getMonth() + 1); render(); };
+
+function render() {
+  const h = data.history || {};
+  $("#vName").textContent = data.name || "";
+  $("#hName").textContent = data.school || "Parent portal"; document.title = `${data.school || "Parent portal"} — Power Haazri`;
+  $("#vMeta").textContent = `Class ${data.cls || ""}${data.father ? " — " + data.father : ""}`;
+
+  const t = h[dkey()], now = new Date();
+  let cls = "wait", sym = "…", title = "Aaj abhi tak school nahi pohanche", sub = "Scan hote hi yahan khud update ho jayega.";
+  if (t && t.in) {
+    cls = t.status === "late" ? "late" : "ok"; sym = "✓";
+    title = `${t12(t.in)} par school pohanch gaye${t.status === "late" ? " (late)" : ""}`;
+    sub = t.out ? `${t12(t.out)} par ghar ke liye rawana hue` : "Abhi school mein hain";
+  } else if (t && t.status === "absent") { cls = "bad"; sym = "✕"; title = "Aaj absent"; sub = "Agar yeh ghalat hai to school se rabta karein."; }
+  $("#vToday").innerHTML = `<div class="today ${cls}"><div class="dot">${sym}</div><div><b>${esc(title)}</b><span class="muted" style="font-size:.88rem">${esc(sub)}</span></div></div>`;
+
+  const y = view.getFullYear(), m = view.getMonth();
+  $("#mLabel").textContent = `${MONTHS[m]} ${y}`;
+  const first = new Date(y, m, 1).getDay(), days = new Date(y, m + 1, 0).getDate(), todayK = dkey();
+  let html = ["Itw", "Pir", "Man", "Bud", "Jum", "Jma", "Haf"].map(d => `<div class="dn">${d}</div>`).join("");
+  html += "<div></div>".repeat(first);
+  let p = 0, l = 0, a = 0;
+  for (let d = 1; d <= days; d++) {
+    const k = `${y}-${pad(m + 1)}-${pad(d)}`, r = h[k] || {};
+    let st = r.in ? (r.status === "late" ? "late" : "present") : r.status === "absent" ? "absent" : "";
+    if (st === "present") p++; else if (st === "late") l++; else if (st === "absent") a++;
+    html += `<div class="d ${st} ${k === todayK ? "now" : ""}" title="${k}">${d}</div>`;
+  }
+  $("#cal").innerHTML = html;
+  const tot = p + l + a;
+  $("#stats").innerHTML = `<div><b>${p + l}</b><span>Haazir</span></div><div><b>${l}</b><span>Late</span></div><div><b>${a}</b><span>Absent</span></div><div><b>${tot ? Math.round((p + l) / tot * 100) : 0}%</b><span>Haazri</span></div>`;
+
+  const keys = Object.keys(h).sort().reverse().slice(0, 10);
+  const L = { present: "Waqt par", late: "Late", absent: "Absent" };
+  $("#recent").innerHTML = keys.length ? keys.map(k => {
+    const r = h[k], st = r.in ? (r.status === "late" ? "late" : "present") : "absent";
+    const [yy, mm, dd] = k.split("-").map(Number);
+    const ds = new Date(yy, mm - 1, dd).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+    return `<li><span>${ds}<br><span class="muted" style="font-size:.82rem">${r.in ? `Aamad ${t12(r.in)}${r.out ? ` — Rawangi ${t12(r.out)}` : ""}` : "—"}</span></span><span class="chip ${st}">${L[st]}</span></li>`;
+  }).join("") : `<li class="muted">Abhi koi record nahi.</li>`;
+
+  $("#foot").innerHTML = `${esc(data.school || "")}${data.schoolPhone ? "<br>Rabta: " + esc(data.schoolPhone) : ""}`;
+}
+
+const saved = load("ph_parent");
+if (saved) { try { const { sch, sid, pin } = JSON.parse(saved); if (!urlSchool || urlSchool === sch) { $("#sch").value = sch; $("#sid").value = sid; open(sch, sid, pin, true); } } catch (e) {} }
+</script>
+</body>
+</html>
