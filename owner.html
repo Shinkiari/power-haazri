@@ -296,6 +296,7 @@ function render() {
         ${l.life ? "" : `<button class="btn sm" data-a="life" data-id="${l.id}">Lifetime</button>`}
         <button class="btn sm" data-a="msg" data-id="${l.id}">Message</button>
         <button class="btn sm gold" data-a="join" data-id="${l.id}">Join code</button>
+        <button class="btn sm" data-a="owner" data-id="${l.id}">Main admin badlein</button>
         <button class="btn sm gold" data-a="view" data-id="${l.id}">Data dekhein</button>
         <button class="btn sm danger" data-a="reset" data-id="${l.id}">Reset</button>
         <button class="btn sm danger" data-a="del" data-id="${l.id}">Delete</button>
@@ -328,6 +329,7 @@ $("#schTable").onclick = e => {
   }
   if (a === "view") viewSchool(l);
   if (a === "join") joinCodeBox(l);
+  if (a === "owner") ownerBox(l);
   if (a === "days") {
     const P = [["2 din", 2], ["7 din", 7], ["15 din", 15], ["1 mahina", 30], ["2 mahine", 60], ["3 mahine", 90], ["6 mahine", 180], ["1 saal", 365]];
     const cur = l.life ? "Lifetime" : l.validUntil ? fmt(l.validUntil.toMillis()) + " tak" : "—";
@@ -403,6 +405,42 @@ async function joinCodeBox(l) {
     try { await updateDoc(doc(db, "schools", l.id), { joinCode: nc }); code = nc; m.querySelector("#jcShow").textContent = nc; toast("Naya join code ban gaya"); }
     catch (e) { toast("Code nahi badla: " + (e.code || e.message)); }
   };
+}
+/* ---- Main admin (school ka malik) badalna ---- */
+async function ownerBox(l) {
+  const m = modal(`<h3>Main admin badlein — ${esc(l.schoolName)}</h3><p class="muted">Load ho raha hai…</p>`);
+  const fail = e => { m.innerHTML = `<h3>Load nahi hua</h3><p class="muted">${esc(e.code || e.message)}</p><button class="btn" id="mX">Band</button>`; m.querySelector("#mX").onclick = closeModal; };
+  let sc, us;
+  try { [sc, us] = await Promise.all([getDoc(doc(db, "schools", l.id)), getDocs(query(collection(db, "users"), where("schoolId", "==", l.id)))]); } catch (e) { return fail(e); }
+  const S2 = sc.data() || {}, ownerUid = S2.ownerUid || "";
+  const list = us.docs.map(d => ({ uid: d.id, ...d.data() }));
+  const rows = list.map(u => {
+    const isMain = u.uid === ownerUid;
+    return `<tr><td>${esc(u.email || "(email nahi)")}<br><span class="muted" style="font-size:.78rem">Join: ${u.joinedAt ? fmt(u.joinedAt) : "—"}</span></td>
+      <td>${isMain ? '<span class="chip c-ok">Main admin</span>' : '<span class="chip c-grey">Admin</span>'}</td>
+      <td>${isMain ? "" : `<button class="btn sm gold" data-mk="${esc(u.uid)}">Main admin banayein</button>`}</td></tr>`;
+  }).join("");
+  m.innerHTML = `<h3>Main admin badlein — ${esc(S2.schoolName || l.schoolName)}</h3>
+    <p class="muted" style="margin:0 0 10px;font-size:.88rem">Abhi main admin: <b>${esc(S2.ownerEmail || "—")}</b></p>
+    <p class="muted" style="margin:0 0 12px;font-size:.85rem">Agar client apni Gmail bhool gaya hai: woh nayi Gmail se app khol kar <b>Join code</b> ke zariye school join kare. Phir woh nayi Gmail yahan list mein aa jayegi — us ke saamne <b>"Main admin banayein"</b> dabayein. Data wahi rahega.</p>
+    <div class="tablewrap"><table><tr><th>Gmail</th><th>Role</th><th></th></tr>${rows || `<tr><td class="muted" colspan="3">Is school mein koi admin nahi mila.</td></tr>`}</table></div>
+    <div class="acts" style="justify-content:flex-end;max-width:none;margin-top:12px"><button class="btn" id="mX">Band</button></div>`;
+  m.querySelector("#mX").onclick = closeModal;
+  m.querySelectorAll("button[data-mk]").forEach(btn => btn.onclick = async () => {
+    const u = list.find(x => x.uid === btn.dataset.mk); if (!u) return;
+    if (!confirm(`${u.email} ko "${S2.schoolName || l.schoolName}" ka MAIN ADMIN banayein?\n\nPurana main admin (${S2.ownerEmail || "—"}) ab sirf Admin rahega.`)) return;
+    btn.disabled = true; btn.textContent = "Ho raha hai…";
+    try {
+      const b = writeBatch(db);
+      b.update(doc(db, "schools", l.id), { ownerUid: u.uid, ownerEmail: u.email || "" });
+      b.update(doc(db, "licenses", l.id), { ownerEmail: u.email || "" });
+      b.update(doc(db, "users", u.uid), { role: "main" });
+      if (ownerUid && ownerUid !== u.uid && list.some(x => x.uid === ownerUid)) b.update(doc(db, "users", ownerUid), { role: "admin" });
+      await b.commit();
+      toast(`${u.email} ab main admin hai`);
+      ownerBox(l);
+    } catch (e) { btn.disabled = false; btn.textContent = "Main admin banayein"; toast("Nahi hua: " + (e.code || e.message)); }
+  });
 }
 /* ---- School ka data dekhna ---- */
 const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
