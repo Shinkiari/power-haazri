@@ -3,195 +3,441 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16233F">
+<meta name="robots" content="noindex">
 <title>Power Haazri — Owner Panel (PRIVATE)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>:root{--ink:#16233F;--ink2:#2C3E66;--gold:#E8A33D;--gold2:#F6D9A6;--paper:#F2F4F9;--line:#E1E6F0;--text:#1A2540;--muted:#69758C;--ok:#22875A;--okbg:#E2F4EA;--late:#B07408;--latebg:#FCF1DA;--bad:#C2453D;--badbg:#FBE6E4;--blue:#2F6FDB;--bluebg:#E6EFFD;--r:16px;font-family:'Lexend',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
-*{box-sizing:border-box}html,body{margin:0}
-body{background:var(--paper);color:var(--text);font-size:15px;line-height:1.5;font-variant-numeric:tabular-nums;-webkit-text-size-adjust:100%}
+<style>
+:root{
+  --ink:#16233F;--ink2:#24365E;--gold:#E8A33D;--gold2:#F6D9A6;--goldbg:#FDF4E3;
+  --paper:#F3F5F9;--card:#fff;--line:#E3E8F1;--line2:#EEF1F6;--text:#18233B;--muted:#68748B;
+  --ok:#1F8556;--okbg:#E3F4EB;--warn:#A86E06;--warnbg:#FCF1DA;--bad:#C2453D;--badbg:#FBE7E5;--blue:#2F6FDB;--bluebg:#E7EFFD;--violet:#7A45C2;--violetbg:#F1E8FB;
+  --r:16px;--nav:64px;--side:248px;
+  font-family:'Lexend',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:var(--paper);color:var(--text);font-size:15px;line-height:1.5;font-variant-numeric:tabular-nums;-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
 button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 [hidden]{display:none!important}
-h1,h2,h3{margin:0;font-weight:600;line-height:1.2}
-.brandlogo{display:block;flex:none}.brandlogo svg,.brandlogo img{width:100%;height:100%;display:block}.brandlogo img{object-fit:contain;border-radius:22%;background:#fff}
-/* header */
-.hero{background:radial-gradient(1200px 300px at 85% -40%,rgba(232,163,61,.28),transparent 60%),linear-gradient(135deg,#1E3160,#121C33);color:#fff;padding:calc(18px + env(safe-area-inset-top,0px)) 0 74px}
-.hero-in{max-width:1140px;margin:0 auto;padding:0 18px;display:flex;align-items:center;gap:14px}
-.hero .brandlogo{width:52px;height:52px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.25))}
-.hero .bn b{display:block;font-size:1.15rem;letter-spacing:.01em}
-.hero .bn span{font-size:.8rem;opacity:.72}
-.hero .sp{flex:1}
-.hbtn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:#fff;border-radius:10px;padding:7px 12px;cursor:pointer;font-size:.85rem;font-weight:500;display:inline-flex;align-items:center;gap:6px}
-.hbtn:hover{background:rgba(255,255,255,.18)}
-.hbtn svg{width:16px;height:16px}
-.who{font-size:.78rem;opacity:.7;margin-right:4px}
-.hero h1{max-width:1140px;margin:22px auto 0;padding:0 18px;font-size:1.5rem;font-weight:500}
-.hero h1 b{color:var(--gold2);font-weight:600}
-main{max-width:1140px;margin:-52px auto 0;padding:0 18px 60px}
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
-.stats>div{background:#fff;border-radius:var(--r);padding:16px 18px;box-shadow:0 8px 24px rgba(22,35,63,.08);display:flex;gap:12px;align-items:center;border:1px solid rgba(225,230,240,.7)}
-.stats i{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;font-style:normal}
-.stats i svg{width:21px;height:21px}
-.stats b{display:block;font-size:1.45rem;font-weight:600;line-height:1.15}
-.stats span{font-size:.78rem;color:var(--muted)}
-.i1{background:var(--bluebg);color:var(--blue)}.i2{background:var(--okbg);color:var(--ok)}.i3{background:var(--latebg);color:var(--late)}.i4{background:#F1E8FB;color:#7A45C2}
-/* cards */
-.card{background:#fff;border:1px solid rgba(225,230,240,.9);border-radius:var(--r);padding:20px 22px;margin-bottom:18px;box-shadow:0 2px 8px rgba(22,35,63,.04)}
-.card h3{font-size:1.02rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.card h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--gold)}
-.chead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.chead h3{margin:0;flex:1}
-.btn{border:1px solid var(--line);background:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:500;white-space:nowrap;transition:background .15s,border-color .15s}
-.btn:hover{border-color:#B9C3D8;background:#FAFBFD}
+h1,h2,h3,h4{margin:0;font-weight:600;line-height:1.25}
+svg.ic{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.muted{color:var(--muted)}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.04em}
+.brandlogo{display:block;flex:none}.brandlogo svg,.brandlogo img{width:100%;height:100%;display:block}.brandlogo img{object-fit:contain;border-radius:24%;background:#fff}
+
+/* ---------- Login ---------- */
+.login{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px 18px;background:radial-gradient(900px 420px at 85% -10%,rgba(232,163,61,.28),transparent 60%),linear-gradient(160deg,#1F3263,#0E172C)}
+.lcard{background:#fff;border-radius:22px;max-width:380px;width:100%;padding:34px 26px 26px;text-align:center;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.lcard .brandlogo{width:82px;height:82px;margin:0 auto 16px}
+.lcard h1{font-size:1.35rem}
+.lcard p{margin:6px 0 24px}
+.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border-radius:12px;border:0;background:var(--ink);color:#fff;font-weight:500;font-size:1rem}
+.gbtn:active{transform:scale(.99)}
+.lfoot{font-size:.78rem;color:var(--muted);margin-top:18px}
+.err{background:var(--badbg);color:var(--bad);border-radius:10px;padding:10px 12px;font-size:.86rem;margin-top:14px;text-align:left}
+
+/* ---------- Shell ---------- */
+.shell{min-height:100vh;min-height:100dvh}
+.side{display:none}
+.top{position:sticky;top:0;z-index:20;background:var(--ink);color:#fff;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(10,18,36,.18)}
+.top .brandlogo{width:36px;height:36px}
+.top .tt{flex:1;min-width:0}
+.top .tt b{display:block;font-size:1.02rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .tt span{display:block;font-size:.74rem;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ibtn{width:40px;height:40px;border-radius:12px;border:0;background:rgba(255,255,255,.1);color:#fff;display:grid;place-items:center;flex:none}
+.ibtn:active{background:rgba(255,255,255,.2)}
+.page{padding:16px 16px calc(var(--nav) + 28px + env(safe-area-inset-bottom,0px));max-width:1080px;margin:0 auto}
+.view{animation:fade .18s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* bottom nav */
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 20px rgba(22,35,63,.06)}
+.bnav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:12px;color:var(--muted);font-size:.72rem;font-weight:500}
+.bnav button .pill{width:52px;height:30px;border-radius:16px;display:grid;place-items:center;transition:background .15s}
+.bnav button.on{color:var(--ink)}
+.bnav button.on .pill{background:var(--goldbg);color:#9A5F00}
+
+/* ---------- Common blocks ---------- */
+.hello{margin:2px 2px 16px}
+.hello h2{font-size:1.3rem;font-weight:500}.hello h2 b{font-weight:600}
+.hello p{margin:2px 0 0;font-size:.86rem}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px}
+.stat i{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-style:normal}
+.stat b{display:block;font-size:1.4rem;font-weight:600;line-height:1.1;margin-bottom:2px}
+.stat span{font-size:.78rem;color:var(--muted)}
+.t-blue{background:var(--bluebg);color:var(--blue)}.t-ok{background:var(--okbg);color:var(--ok)}.t-warn{background:var(--warnbg);color:var(--warn)}.t-vio{background:var(--violetbg);color:var(--violet)}.t-bad{background:var(--badbg);color:var(--bad)}
+.sec{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 2px 10px}
+.sec h3{font-size:.98rem}
+.sec a,.link{color:var(--blue);font-size:.85rem;font-weight:500;background:none;border:0;padding:0;text-decoration:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.list{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--line2);background:none;border-left:0;border-right:0;border-top:0;width:100%;text-align:left}
+.row:last-child{border-bottom:0}
+button.row:active,button.row:hover{background:#F8FAFD}
+.row .grow{flex:1;min-width:0}
+.row .grow b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .grow span{display:block;font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .end{text-align:right;flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.row .end small{font-size:.74rem;color:var(--muted)}
+.av{width:42px;height:42px;border-radius:12px;flex:none;display:grid;place-items:center;font-weight:600;color:#fff;font-size:.92rem;background:linear-gradient(135deg,#34508A,#16233F)}
+.chev{color:#B3BCCD}
+.empty{padding:28px 16px;text-align:center;color:var(--muted);font-size:.9rem}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:.74rem;font-weight:500;white-space:nowrap}
+.chip:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.c-ok{background:var(--okbg);color:var(--ok)}.c-warn{background:var(--warnbg);color:var(--warn)}.c-bad{background:var(--badbg);color:var(--bad)}.c-grey{background:#EDF0F6;color:var(--muted)}
+
+/* buttons & inputs */
+.btn{border:1px solid var(--line);background:#fff;padding:10px 16px;border-radius:12px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;transition:background .15s,border-color .15s}
+.btn:hover{background:#F8FAFD;border-color:#CBD3E2}
+.btn:active{transform:scale(.985)}
 .btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}.btn.primary:hover{background:var(--ink2)}
 .btn.gold{background:var(--gold);border-color:var(--gold);color:#1A2540;font-weight:600}.btn.gold:hover{background:#F0B04F}
-.btn.soft{background:var(--bluebg);border-color:transparent;color:var(--blue)}
-.btn.danger{color:var(--bad)}.btn.danger:hover{background:var(--badbg);border-color:#F0C6C2}
-.btn.sm{padding:5px 10px;font-size:.8rem;border-radius:8px}
-.input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.btn.wa{background:#1FA855;border-color:#1FA855;color:#fff}.btn.wa:hover{background:#1A9549}
+.btn.danger{color:var(--bad);border-color:#F1CFCB}.btn.danger:hover{background:var(--badbg)}
+.btn.dfill{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn.block{width:100%}
+.btn.sm{padding:6px 12px;font-size:.82rem;border-radius:10px}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:.95rem}
 .input:focus{border-color:#9FB0D3;outline:none;box-shadow:0 0 0 3px rgba(47,111,219,.12)}
-.field{display:block;margin-bottom:12px}.field>span{display:block;font-size:.8rem;color:var(--muted);margin-bottom:4px}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0 12px}
-.seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.seg button{border:1px solid var(--line);background:#fff;border-radius:22px;padding:6px 15px;cursor:pointer;font-weight:500;font-size:.88rem}
-.seg button.on{background:var(--ink);border-color:var(--ink);color:#fff}
-.keybox{background:linear-gradient(135deg,#FFF8EA,#FDF1D8);border:1px dashed var(--gold);border-radius:12px;padding:14px 16px;margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.keybox code{font-size:1.35rem;font-weight:600;letter-spacing:.08em;flex:1;color:var(--ink)}
-.search{flex:1 1 220px;max-width:300px}
-.filters{display:flex;gap:6px;flex-wrap:wrap}
-.filters button{border:1px solid var(--line);background:#fff;border-radius:20px;padding:4px 12px;font-size:.8rem;cursor:pointer;color:var(--muted)}
-.filters button.on{background:var(--ink);border-color:var(--ink);color:#fff}
-.tablewrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:.88rem}
-th{text-align:left;font-weight:500;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
-td{padding:12px 10px;border-bottom:1px solid #EEF1F7;vertical-align:top}
-tr:last-child td{border:0}
-#schTable tr:hover td{background:#FAFBFE}
-.sname{display:flex;gap:10px;align-items:center}
-.sav{width:38px;height:38px;border-radius:11px;flex:none;display:grid;place-items:center;font-weight:600;color:#fff;font-size:.9rem;background:linear-gradient(135deg,#2C3E66,#16233F)}
-.chip{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:500;white-space:nowrap}
-.c-ok{background:var(--okbg);color:var(--ok)}.c-warn{background:var(--latebg);color:var(--late)}.c-bad{background:var(--badbg);color:var(--bad)}.c-grey{background:#EDF0F6;color:var(--muted)}
-.acts{display:flex;gap:5px;flex-wrap:wrap;max-width:430px}
-.acts .grp{display:flex;gap:5px;flex-wrap:wrap;width:100%}
-.muted{color:var(--muted)}
-/* login */
-.login{min-height:100vh;display:grid;place-items:center;background:radial-gradient(900px 400px at 80% -10%,rgba(232,163,61,.3),transparent 60%),linear-gradient(135deg,#1E3160,#0F1830);padding:20px}
-.login .card{max-width:380px;width:100%;text-align:center;padding:34px 28px;box-shadow:0 30px 60px rgba(0,0,0,.3);border:0}
-.login .brandlogo{width:84px;height:84px;margin:0 auto 14px}
-.login h2{font-size:1.3rem}
-.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px}
-.err{background:var(--badbg);color:var(--bad);border-radius:10px;padding:9px 12px;font-size:.86rem;margin-top:12px}
-.foot{text-align:center;color:var(--muted);font-size:.78rem;padding:10px 0 0}
-.modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,24,48,.55);backdrop-filter:blur(3px);display:grid;place-items:center;padding:16px;z-index:50}
-.mbox{background:#fff;border-radius:18px;max-width:460px;width:100%;padding:22px 24px;box-shadow:0 30px 70px rgba(0,0,0,.3)}
-.mbox h3{margin-bottom:10px}
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 20px;border-radius:12px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-.toast.show{opacity:1}
+textarea.input{resize:vertical}
+.field{display:block;margin-bottom:14px}
+.field>span{display:block;font-size:.8rem;color:var(--muted);margin-bottom:5px;font-weight:500}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.searchbox{position:relative;margin-bottom:12px}
+.searchbox svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.searchbox .input{padding-left:42px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 12px;margin:0 -2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 14px;font-size:.84rem;font-weight:500;color:var(--muted)}
+.chips button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chips button em{font-style:normal;opacity:.7;margin-left:4px}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:#E9EDF4;border-radius:12px;padding:4px;margin-bottom:16px}
+.seg button{border:0;background:none;border-radius:9px;padding:9px 4px;font-weight:500;font-size:.84rem;color:var(--muted)}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(22,35,63,.12)}
+.keybox{background:linear-gradient(135deg,#FFF8EA,#FDF0D5);border:1px dashed var(--gold);border-radius:14px;padding:16px;text-align:center}
+.keybox code{display:block;font-size:1.5rem;font-weight:600;letter-spacing:.08em;color:var(--ink);margin:4px 0 2px;word-break:break-all}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}
+.btnrow>.btn{flex:1 1 0}
+
+/* ---------- School detail ---------- */
+.detail{position:fixed;inset:0;z-index:40;background:var(--paper);overflow-y:auto;animation:slide .2s ease}
+@keyframes slide{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
+.dhead{background:linear-gradient(160deg,#1F3263,#121C33);color:#fff;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 22px}
+.dhead>*{max-width:728px;margin-left:auto;margin-right:auto}
+.dhead .bar{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.dhead .bar b{flex:1;font-weight:500;font-size:.95rem;opacity:.85}
+.dprof{display:flex;align-items:center;gap:14px}
+.dprof .av{width:56px;height:56px;border-radius:16px;font-size:1.15rem;background:rgba(255,255,255,.14)}
+.dprof .av img{width:100%;height:100%;object-fit:contain;border-radius:16px;background:#fff}
+.dprof h2{font-size:1.2rem}
+.dprof p{margin:3px 0 0;font-size:.82rem;opacity:.75}
+.dbody{max-width:760px;margin:0 auto;padding:16px 16px 40px}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:-6px}
+.info>div{background:#fff;padding:12px 14px;min-width:0}
+.info span{display:block;font-size:.74rem;color:var(--muted)}
+.info b{display:block;font-weight:500;font-size:.92rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.info .wide{grid-column:1/-1}
+.banner{display:flex;gap:10px;align-items:flex-start;background:var(--warnbg);color:#7A5205;border-radius:12px;padding:11px 13px;font-size:.85rem;margin-top:12px}
+.agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.act{border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:.8rem;font-weight:500;text-align:center;line-height:1.25}
+.act:hover{border-color:#CBD3E2;background:#FBFCFE}
+.act:active{transform:scale(.98)}
+.act i{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-style:normal}
+.act.bad{color:var(--bad)}
+.lockbar{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.lockbar .grow{flex:1}
+.lockbar b{display:block;font-weight:600}
+.lockbar span{font-size:.8rem;color:var(--muted)}
+
+/* ---------- Sheet / modal ---------- */
+.modal{position:fixed;inset:0;background:rgba(12,20,40,.55);backdrop-filter:blur(2px);z-index:60;display:flex;align-items:flex-end;justify-content:center}
+.mbox{background:#fff;width:100%;max-height:92vh;max-height:92dvh;overflow-y:auto;border-radius:22px 22px 0 0;padding:10px 18px calc(18px + env(safe-area-inset-bottom,0px));animation:up .2s ease}
+.mbox:before{content:"";display:block;width:40px;height:4px;border-radius:4px;background:#D5DBE6;margin:0 auto 14px}
+@keyframes up{from{transform:translateY(30px);opacity:.4}to{transform:none;opacity:1}}
+.mbox h3{font-size:1.08rem;margin-bottom:6px}
+.mbox .sub{font-size:.86rem;color:var(--muted);margin:0 0 14px}
+.mfoot{display:flex;gap:10px;margin-top:16px}
+.mfoot>.btn{flex:1}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:.84rem}
+th{text-align:left;font-weight:500;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;font-size:.74rem;text-transform:uppercase;letter-spacing:.04em;background:#FAFBFD}
+td{padding:9px 10px;border-bottom:1px solid var(--line2);vertical-align:top}
+tr:last-child td{border-bottom:0}
+.minis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.minis div{background:var(--paper);border-radius:12px;padding:10px;text-align:center}
+.minis b{display:block;font-size:1.15rem}
+.minis span{font-size:.7rem;color:var(--muted)}
 .lgprev{width:84px;height:84px;border-radius:18px;border:1px solid var(--line);padding:6px;background:#fff}
-@media (max-width:860px){.stats{grid-template-columns:1fr 1fr}.g4{grid-template-columns:1fr 1fr}}
-@media (max-width:640px){
-  .hero{padding-bottom:64px}.hero .brandlogo{width:44px;height:44px}.hero .bn b{font-size:1rem;white-space:nowrap}.hero .bn span{font-size:.72rem;white-space:nowrap}.hero-in{gap:10px}.hero h1{font-size:1.2rem;margin-top:16px}.who{display:none}.hbtn .t{display:none}
-  .stats{gap:10px}.stats>div{padding:12px;gap:10px}.stats i{width:36px;height:36px}.stats b{font-size:1.15rem}
-  .card{padding:16px}.g4{grid-template-columns:1fr}
-  #schTable,#schTable tbody,#schTable tr,#schTable td{display:block;width:100%}
-  #schTable tr:first-child{display:none}
-  #schTable tr{border:1px solid var(--line);border-radius:14px;padding:6px 4px;margin-bottom:12px}
-  #schTable td{border:0;padding:6px 10px}
-  #schTable td[data-l]:before{content:attr(data-l);display:block;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-  .acts{max-width:none}
+.toast{position:fixed;left:50%;bottom:calc(var(--nav) + 22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:12px;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:80;box-shadow:0 10px 30px rgba(0,0,0,.25);font-size:.9rem;max-width:calc(100vw - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.menu{position:fixed;z-index:70;top:calc(58px + env(safe-area-inset-top,0px));right:12px;background:#fff;border-radius:14px;box-shadow:0 16px 40px rgba(12,20,40,.22);min-width:220px;padding:6px;border:1px solid var(--line)}
+.menu .me{padding:10px 12px 8px;font-size:.8rem;color:var(--muted);border-bottom:1px solid var(--line2);margin-bottom:4px;word-break:break-all}
+.menu button{width:100%;display:flex;align-items:center;gap:10px;border:0;background:none;padding:11px 12px;border-radius:10px;text-align:left;font-weight:500}
+.menu button:hover{background:var(--paper)}
+.menu .bad{color:var(--bad)}
+
+/* ---------- Desktop ---------- */
+@media (min-width:900px){
+  .bnav{display:none}
+  .side{display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;width:var(--side);background:var(--ink);color:#fff;padding:22px 14px;z-index:25}
+  .side .sb{display:flex;align-items:center;gap:12px;padding:0 8px 22px}
+  .side .sb .brandlogo{width:44px;height:44px}
+  .side .sb b{display:block;font-size:1.02rem}.side .sb span{font-size:.74rem;opacity:.65}
+  .side nav{display:flex;flex-direction:column;gap:4px}
+  .side nav button{border:0;background:none;color:rgba(255,255,255,.72);display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;font-weight:500;text-align:left}
+  .side nav button:hover{background:rgba(255,255,255,.07);color:#fff}
+  .side nav button.on{background:rgba(232,163,61,.16);color:var(--gold2)}
+  .side .sfoot{margin-top:auto;font-size:.74rem;opacity:.55;padding:0 8px;line-height:1.6}
+  .main{margin-left:var(--side)}
+  .top{background:var(--paper);color:var(--text);box-shadow:none;padding:22px 28px 6px;position:static}
+  .top .brandlogo{display:none}
+  .top .tt b{font-size:1.4rem}
+  .top .tt span{display:none}
+  .top .ibtn{background:#fff;color:var(--text);border:1px solid var(--line)}
+  .page{padding:12px 28px 40px;max-width:1120px;margin:0}
+  .stats{grid-template-columns:repeat(4,1fr)}
+  .stat{flex-direction:row;align-items:center;padding:16px 18px}
+  .hgrid{display:grid;grid-template-columns:1.2fr 1fr;gap:0 20px}
+  .slist{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:none;border:0;overflow:visible}
+  .slist .row{background:#fff;border:1px solid var(--line);border-radius:var(--r)}
+  .nk{max-width:620px}
+  .detail{left:var(--side)}
+  .modal{align-items:center;padding:20px}
+  .mbox{max-width:500px;border-radius:20px;padding:22px 24px}
+  .mbox.wide{max-width:960px}
+  .mbox:before{display:none}
+  .toast{bottom:28px}
+  .menu{top:70px;right:28px}
+  .agrid{grid-template-columns:repeat(4,1fr)}
 }
+@media (max-width:380px){.agrid{grid-template-columns:repeat(2,1fr)}.seg button{font-size:.76rem}.minis{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="ptg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34508A"/><stop offset="1" stop-color="#121C33"/></linearGradient><linearGradient id="ptb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE29A"/><stop offset="1" stop-color="#E8A33D"/></linearGradient></defs><symbol id="logo" viewBox="0 0 48 48"><circle cx="24" cy="24" r="23" fill="#E8A33D"/><path d="M24 7l4.6 11.2L40.5 19l-9.1 7.7 2.9 11.8L24 32.1l-10.3 6.4 2.9-11.8L7.5 19l11.9-.8z" fill="#1B2A4A"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="ptg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34508A"/><stop offset="1" stop-color="#121C33"/></linearGradient>
+    <linearGradient id="ptb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE29A"/><stop offset="1" stop-color="#E8A33D"/></linearGradient>
+  </defs>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-school" viewBox="0 0 24 24"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-5h6v5M10 11h4"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 9.2-9.2M17 6l3 3M14 9l2 2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-rs" viewBox="0 0 24 24"><path d="M6 4h12M6 9h12M6 4h3a5 5 0 0 1 0 10H6l8 6"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-inf" viewBox="0 0 24 24"><path d="M7 15.5a3.5 3.5 0 1 1 0-7c3 0 7 7 10 7a3.5 3.5 0 1 0 0-7c-3 0-7 7-10 7z"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+  <symbol id="i-crown" viewBox="0 0 24 24"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1l1-13M9 7V4h6v3"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M3.5 20.5 5 16a8.5 8.5 0 1 1 3 3z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-2-1-1 .8a3.5 3.5 0 0 1-2-2l.8-1-1-2z"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-brand" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M14 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 16l-4-4 4-4M6 12h9"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 20h20zM12 10v4M12 17h.01"/></symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+</svg>
 
-<div id="login" class="login"><div class="card">
-  <span class="brandlogo" data-blogo><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="17" fill="url(#ptg)"/><circle cx="32" cy="32" r="21" fill="none" stroke="#E8A33D" stroke-opacity=".35" stroke-width="2"/><circle cx="32" cy="32" r="14" fill="none" stroke="#FFFFFF" stroke-opacity=".08" stroke-width="6"/><path d="M36 9 18 35h12l-3 20 19-28H34z" fill="url(#ptb)"/></svg></span>
-  <h2 data-bname>Power Technology</h2>
-  <p class="muted" style="margin:4px 0 22px">Power Haazri — Owner panel</p>
-  <button class="btn primary gbtn" id="gBtn"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="#fff" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z" opacity=".9"/><path fill="#fff" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z" opacity=".75"/><path fill="#fff" d="M6.4 14c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3.1a10 10 0 0 0 0 9.2z" opacity=".6"/><path fill="#fff" d="M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.4L6.4 10C7.2 7.7 9.4 5.9 12 5.9z" opacity=".85"/></svg>Google se login</button>
-  <p class="foot">Sirf shinkiari45@gmail.com · 0310-5802297</p>
-  <div class="err" id="lErr" hidden></div>
-</div></div>
-
-<div id="app" hidden>
-  <div class="hero">
-    <div class="hero-in">
-      <span class="brandlogo" data-blogo><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="17" fill="url(#ptg)"/><circle cx="32" cy="32" r="21" fill="none" stroke="#E8A33D" stroke-opacity=".35" stroke-width="2"/><circle cx="32" cy="32" r="14" fill="none" stroke="#FFFFFF" stroke-opacity=".08" stroke-width="6"/><path d="M36 9 18 35h12l-3 20 19-28H34z" fill="url(#ptb)"/></svg></span>
-      <div class="bn"><b data-bname>Power Technology</b><span>Power Haazri · Owner panel</span></div>
-      <span class="sp"></span>
-      <span class="who" id="who"></span>
-      <button class="hbtn" id="brandBtn" title="Logo aur naam badlein"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span class="t">Brand</span></button>
-      <button class="hbtn" id="out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 16l-4-4 4-4M6 12h9"/></svg><span class="t">Logout</span></button>
-    </div>
-    <h1 id="greet">Assalam o Alaikum 👋</h1>
+<!-- ============ LOGIN ============ -->
+<div id="login" class="login">
+  <div class="lcard">
+    <span class="brandlogo" data-blogo><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="17" fill="url(#ptg)"/><circle cx="32" cy="32" r="21" fill="none" stroke="#E8A33D" stroke-opacity=".35" stroke-width="2"/><path d="M36 9 18 35h12l-3 20 19-28H34z" fill="url(#ptb)"/></svg></span>
+    <h1 data-bname>Power Technology</h1>
+    <p class="muted">Power Haazri · Owner panel</p>
+    <button class="gbtn" id="gBtn"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#EA4335" d="M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.4L6.4 10C7.2 7.7 9.4 5.9 12 5.9z"/><path fill="#4285F4" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z"/><path fill="#34A853" d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z"/><path fill="#FBBC05" d="M6.4 14c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3.1a10 10 0 0 0 0 9.2z"/></svg>Google se login karein</button>
+    <div class="err" id="lErr" hidden></div>
+    <p class="lfoot">Sirf owner account ke liye · 0310-5802297</p>
   </div>
-  <main>
-    <div class="stats" id="stats"></div>
+</div>
 
-    <div class="card">
-      <h3><span class="dot"></span>Activation key banayein</h3>
-      <div class="seg" id="seg">
-        <button data-t="trial" data-d="7" class="on">Trial</button>
-        <button data-t="period" data-d="30">Muqarrar muddat</button>
-        <button data-t="year" data-d="365">1 saal</button>
-        <button data-t="life" data-d="0">Lifetime</button>
-      </div>
-      <div class="g4">
-        <label class="field" id="daysF"><span>Din</span><input class="input" id="kDays" type="number" min="1" value="7"></label>
-        <label class="field"><span>School / client ka naam</span><input class="input" id="kNote"></label>
-        <label class="field"><span>Client WhatsApp number</span><input class="input" id="kPhone" placeholder="03xx-xxxxxxx"></label>
-        <label class="field"><span>Raqam (Rs)</span><input class="input" id="kAmt" type="number" min="0" value="0"></label>
-      </div>
-      <button class="btn gold" id="kGen">Key banayein</button>
-      <div id="kOut"></div>
-    </div>
+<!-- ============ APP ============ -->
+<div id="app" class="shell" hidden>
+  <aside class="side">
+    <div class="sb"><span class="brandlogo" data-blogo></span><div><b data-bname>Power Technology</b><span>Power Haazri · Owner</span></div></div>
+    <nav id="sideNav">
+      <button data-v="home"><svg class="ic"><use href="#i-home"/></svg>Home</button>
+      <button data-v="schools"><svg class="ic"><use href="#i-school"/></svg>Schools</button>
+      <button data-v="newkey"><svg class="ic"><use href="#i-plus"/></svg>Nayi key</button>
+      <button data-v="keys"><svg class="ic"><use href="#i-key"/></svg>Keys</button>
+    </nav>
+    <div class="sfoot">© Power Technology, Shinkiari<br>0310-5802297 · 0333-9764399</div>
+  </aside>
 
-    <div class="card">
-      <div class="chead"><h3><span class="dot"></span>Schools</h3><input class="input search" id="sSearch" placeholder="School, ID ya email talash karein"></div>
-      <div class="filters" id="sFilt" style="margin-bottom:12px"><button class="on" data-f="all">Sab</button><button data-f="ok">Chalu</button><button data-f="warn">Jald khatam / mohlat</button><button data-f="bad">Khatam / band</button></div>
-      <div class="tablewrap"><table id="schTable"></table></div>
-    </div>
+  <div class="main">
+    <header class="top">
+      <span class="brandlogo" data-blogo></span>
+      <div class="tt"><b id="vTitle">Home</b><span data-bname>Power Technology</span></div>
+      <button class="ibtn" id="menuBtn" aria-label="Menu"><svg class="ic"><use href="#i-more"/></svg></button>
+    </header>
 
-    <div class="card">
-      <h3><span class="dot"></span>Keys</h3>
-      <div class="tablewrap"><table id="keyTable"></table></div>
+    <div class="page">
+      <!-- HOME -->
+      <section class="view" id="v-home">
+        <div class="hello"><h2 id="greet"></h2><p class="muted" id="hdate"></p></div>
+        <div class="stats" id="stats"></div>
+        <div class="hgrid">
+          <div>
+            <div class="sec"><h3>Tawajjo talab schools</h3><button class="link" data-go="schools">Sab dekhein</button></div>
+            <div class="list" id="attn"></div>
+          </div>
+          <div>
+            <div class="sec"><h3>Haal hi ki keys</h3><button class="link" data-go="keys">Sab dekhein</button></div>
+            <div class="list" id="recentKeys"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCHOOLS -->
+      <section class="view" id="v-schools" hidden>
+        <div class="searchbox"><svg class="ic"><use href="#i-search"/></svg><input class="input" id="sSearch" placeholder="School, ID, email ya phone talash karein" autocomplete="off"></div>
+        <div class="chips" id="sFilt"></div>
+        <div class="list slist" id="schList"></div>
+      </section>
+
+      <!-- NEW KEY -->
+      <section class="view nk" id="v-newkey" hidden>
+        <div class="card">
+          <div class="seg" id="seg">
+            <button data-t="trial" data-d="7" class="on">Trial</button>
+            <button data-t="period" data-d="30">Muddat</button>
+            <button data-t="year" data-d="365">1 saal</button>
+            <button data-t="life" data-d="0">Lifetime</button>
+          </div>
+          <label class="field" id="daysF"><span>Kitne din</span><input class="input" id="kDays" type="number" inputmode="numeric" min="1" value="7"></label>
+          <label class="field"><span>School / client ka naam</span><input class="input" id="kNote" placeholder="Maslan: Nova Learning Academy"></label>
+          <div class="grid2">
+            <label class="field"><span>WhatsApp number</span><input class="input" id="kPhone" inputmode="tel" placeholder="03xx-xxxxxxx"></label>
+            <label class="field"><span>Raqam (Rs)</span><input class="input" id="kAmt" type="number" inputmode="numeric" min="0" value="0"></label>
+          </div>
+          <button class="btn gold block" id="kGen"><svg class="ic"><use href="#i-key"/></svg>Key banayein</button>
+        </div>
+        <div id="kOut" style="margin-top:14px"></div>
+      </section>
+
+      <!-- KEYS -->
+      <section class="view" id="v-keys" hidden>
+        <div class="chips" id="kFilt"></div>
+        <div class="list" id="keyList"></div>
+      </section>
     </div>
-  </main>
+  </div>
+
+  <nav class="bnav" id="bNav">
+    <button data-v="home"><span class="pill"><svg class="ic"><use href="#i-home"/></svg></span>Home</button>
+    <button data-v="schools"><span class="pill"><svg class="ic"><use href="#i-school"/></svg></span>Schools</button>
+    <button data-v="newkey"><span class="pill"><svg class="ic"><use href="#i-plus"/></svg></span>Nayi key</button>
+    <button data-v="keys"><span class="pill"><svg class="ic"><use href="#i-key"/></svg></span>Keys</button>
+  </nav>
+</div>
+
+<div id="detail" class="detail" hidden></div>
+<div id="menu" class="menu" hidden>
+  <div class="me" id="who"></div>
+  <button id="brandBtn"><svg class="ic"><use href="#i-brand"/></svg>Brand — logo aur naam</button>
+  <button id="out" class="bad"><svg class="ic"><use href="#i-out"/></svg>Logout</button>
 </div>
 <div id="modal" class="modal" hidden><div class="mbox" id="mbox"></div></div>
-<div id="toast" class="toast"></div>
-<p class="foot" style="padding-bottom:24px">© Power Technology, Shinkiari · 0310-5802297 · 0333-9764399</p>
+<div id="toast" class="toast" role="status"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithCredential, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, collection, query, where, orderBy, limit, onSnapshot, writeBatch, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = await (await fetch("./config.json", { cache: "no-store" })).json(); // config.json (isi folder mein)
+const firebaseConfig = await (await fetch("./config.json", { cache: "no-store" })).json();
 const OWNER_EMAIL = "shinkiari45@gmail.com";
-const APP_URL = "https://shinkiari.github.io/power-haazri/"; // client ko diya jane wala app link
-const GRACE_DAYS = 3;
+const SITE = "https://shinkiari.github.io/power-haazri/";
+const APP_URL = SITE;                          // client ko diya jane wala app link
+const LOGIN_URL = SITE + "applogin.html?app=owner";
+const GRACE_DAYS = 3, DAY = 864e5;
+const CONTACT = "- Power Technology Shinkiari\n0310-5802297, 0333-9764399";
+const AND = window.Android || null;            // Android APK bridge (agar app mein khula ho)
 
 const app = initializeApp(firebaseConfig), auth = getAuth(app), db = getFirestore(app);
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const fmt = ms => new Date(ms).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-const DAY = 864e5;
+const ic = (n, cls = "ic") => `<svg class="${cls}"><use href="#i-${n}"/></svg>`;
 const TYPE = { trial: "Trial", period: "Muddat", year: "1 saal", life: "Lifetime" };
 function toast(m) { const t = $("#toast"); t.textContent = m; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2800); }
 function normWa(p) { let d = String(p || "").replace(/\D/g, ""); if (d.startsWith("0")) d = "92" + d.slice(1); return d; }
 function genKey() { const c = "23456789ABCDEFGHJKMNPQRSTUVWXYZ"; const r = [...crypto.getRandomValues(new Uint8Array(12))].map(x => c[x % c.length]).join(""); return r.match(/.{4}/g).join("-"); }
-function modal(html) { $("#mbox").style.cssText = ""; $("#mbox").innerHTML = html; $("#modal").hidden = false; return $("#mbox"); }
+function genCode(n) { const c = "23456789ABCDEFGHJKMNPQRSTUVWXYZ"; return [...crypto.getRandomValues(new Uint8Array(n))].map(x => c[x % c.length]).join(""); }
+const initials = n => String(n || "S").split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+
+/* ---------- Native helpers (APK + browser dono) ---------- */
+function openExt(url) { if (AND && AND.openUrl) AND.openUrl(url); else window.open(url, "_blank", "noopener"); }
+function openWa(phone, msg) { const p = normWa(phone); openExt(`https://wa.me/${p}?text=${encodeURIComponent(msg)}`); }
+async function copyText(t, okMsg = "Copy ho gaya") {
+  try {
+    if (AND && AND.copy) AND.copy(t);
+    else if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(t);
+    else { const a = document.createElement("textarea"); a.value = t; document.body.appendChild(a); a.select(); document.execCommand("copy"); a.remove(); }
+    toast(okMsg);
+  } catch (e) { toast("Copy nahi hua"); }
+}
+function csvDl(name, rows) {
+  const t = "﻿" + rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
+  if (AND && AND.saveFile) { AND.saveFile(name, t); return; }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([t], { type: "text/csv" })); a.download = name; a.click();
+}
+
+/* ---------- Modal / sheet ---------- */
+function modal(html, wide = false) { const b = $("#mbox"); b.className = "mbox" + (wide ? " wide" : ""); b.innerHTML = html; $("#modal").hidden = false; b.scrollTop = 0; return b; }
 const closeModal = () => { $("#modal").hidden = true; };
 $("#modal").onclick = e => { if (e.target.id === "modal") closeModal(); };
+function ask(title, text, okLabel = "Haan", danger = false) {
+  return new Promise(res => {
+    const m = modal(`<h3>${title}</h3><p class="sub">${text}</p><div class="mfoot"><button class="btn" id="aNo">Wapas</button><button class="btn ${danger ? "dfill" : "primary"}" id="aOk">${okLabel}</button></div>`);
+    m.querySelector("#aNo").onclick = () => { closeModal(); res(false); };
+    m.querySelector("#aOk").onclick = () => { closeModal(); res(true); };
+  });
+}
 
-let schools = [], keys = [], unsubs = [], curType = "trial", sFilter = "all";
-$("#sSearch").oninput = () => render();
-$("#sFilt").onclick = e => { const b = e.target.closest("button[data-f]"); if (!b) return; sFilter = b.dataset.f; [...$("#sFilt").children].forEach(x => x.classList.toggle("on", x === b)); render(); };
-/* Brand: logo + naam (Firestore meta/brand, aur login screen ke liye local cache) */
+/* ---------- State ---------- */
+let schools = [], keys = [], unsubs = [], curType = "trial", sFilter = "all", kFilter = "all", view = "home", openSid = null;
+
+/* ---------- Navigation ---------- */
+const TITLES = { home: "Home", schools: "Schools", newkey: "Nayi activation key", keys: "Activation keys" };
+function show(v) {
+  view = v;
+  document.querySelectorAll(".view").forEach(s => s.hidden = s.id !== "v-" + v);
+  document.querySelectorAll("#bNav button,#sideNav button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
+  $("#vTitle").textContent = TITLES[v];
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll("#bNav button,#sideNav button").forEach(b => b.onclick = () => { closeDetail(); show(b.dataset.v); });
+document.addEventListener("click", e => { const g = e.target.closest("[data-go]"); if (g) { if (g.dataset.f) setSFilter(g.dataset.f); show(g.dataset.go); } });
+$("#menuBtn").onclick = e => { e.stopPropagation(); $("#menu").hidden = !$("#menu").hidden; };
+document.addEventListener("click", e => { if (!e.target.closest("#menu")) $("#menu").hidden = true; });
+// Android back button
+window.__back = () => {
+  if (!$("#menu").hidden) { $("#menu").hidden = true; return true; }
+  if (!$("#modal").hidden) { closeModal(); return true; }
+  if (openSid) { closeDetail(); return true; }
+  if (view !== "home") { show("home"); return true; }
+  return false;
+};
+
+/* ---------- Brand ---------- */
 const DEFAULT_LOGO = document.querySelector("[data-blogo]").innerHTML;
 let brand = (() => { try { return JSON.parse(localStorage.getItem("pt_brand") || "{}"); } catch (e) { return {}; } })();
 function paintBrand() {
@@ -209,12 +455,13 @@ async function shrinkImg(file) {
   c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); return c.toDataURL("image/png");
 }
 $("#brandBtn").onclick = () => {
+  $("#menu").hidden = true;
   let lg = brand.logo || "";
-  const m = modal(`<h3>Brand — logo aur naam</h3><p class="muted" style="margin:0 0 14px;font-size:.88rem">Yeh owner panel aur login screen par nazar aata hai.</p>
-    <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px"><span class="brandlogo lgprev" id="bPrev"></span>
-      <div style="display:flex;flex-direction:column;gap:6px"><input type="file" accept="image/*" id="bFile" hidden><button class="btn sm" id="bPick">Naya logo chunein</button><button class="btn sm" id="bDef">Default Power Technology logo</button></div></div>
+  const m = modal(`<h3>Brand — logo aur naam</h3><p class="sub">Yeh owner panel aur login screen par nazar aata hai.</p>
+    <div style="display:flex;gap:14px;align-items:center;margin-bottom:16px"><span class="brandlogo lgprev" id="bPrev"></span>
+      <div style="display:flex;flex-direction:column;gap:8px;flex:1"><input type="file" accept="image/*" id="bFile" hidden><button class="btn sm" id="bPick">Naya logo chunein</button><button class="btn sm" id="bDef">Default logo</button></div></div>
     <label class="field"><span>Naam</span><input class="input" id="bName" value="${esc(brand.name || "Power Technology")}"></label>
-    <div class="acts" style="justify-content:flex-end;max-width:none"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk">Save</button></div>`);
+    <div class="mfoot"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk">Save</button></div>`);
   const pv = () => { m.querySelector("#bPrev").innerHTML = lg ? `<img src="${lg}" alt="">` : DEFAULT_LOGO; }; pv();
   m.querySelector("#bPick").onclick = () => m.querySelector("#bFile").click();
   m.querySelector("#bFile").onchange = async e => { try { lg = await shrinkImg(e.target.files[0]); pv(); } catch (err) { toast(err.message); } };
@@ -226,40 +473,36 @@ $("#brandBtn").onclick = () => {
   };
 };
 
-$("#gBtn").onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch(e => { $("#lErr").textContent = "Login nahi hua: " + (e.code || e.message); $("#lErr").hidden = false; });
-$("#out").onclick = () => signOut(auth);
+/* ---------- Auth ---------- */
+function lErr(m) { $("#lErr").textContent = m; $("#lErr").hidden = !m; }
+$("#gBtn").onclick = async () => {
+  lErr("");
+  if (AND) { openExt(LOGIN_URL); lErr('Browser khul gaya hai: wahan apni Gmail chunein, phir "Power Haazri kholein" dabayein.'); return; }
+  try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch (e) { if (e.code !== "auth/popup-closed-by-user") lErr("Login nahi hua: " + (e.code || e.message)); }
+};
+window.__onAuthToken = async t => {
+  if (!t) return; lErr("Login ho raha hai…");
+  try { await signInWithCredential(auth, GoogleAuthProvider.credential(t)); lErr(""); }
+  catch (e) { lErr("Login nahi hua (" + (e.code || e.message) + "). Dobara koshish karein."); }
+};
+if (AND && AND.pendingToken) { const t = AND.pendingToken(); if (t) window.__onAuthToken(t); }
+$("#out").onclick = async () => { $("#menu").hidden = true; if (await ask("Logout karein?", "Dobara aane ke liye Gmail se login karna hoga.", "Logout")) signOut(auth); };
+
 onAuthStateChanged(auth, user => {
   unsubs.forEach(u => u()); unsubs = [];
-  if (!user) { $("#login").hidden = false; $("#app").hidden = true; return; }
-  if (user.email !== OWNER_EMAIL) { $("#lErr").textContent = `Yeh panel sirf ${OWNER_EMAIL} ke liye hai.`; $("#lErr").hidden = false; signOut(auth); return; }
-  $("#who").textContent = user.email; $("#login").hidden = true; $("#app").hidden = false;
-  const h = new Date().getHours(); $("#greet").innerHTML = `${h < 12 ? "Subah bakhair" : h < 17 ? "Assalam o Alaikum" : "Shaam bakhair"}, <b>Nasir Khan</b>`;
+  if (!user) { $("#login").hidden = false; $("#app").hidden = true; closeDetail(); return; }
+  if (user.email !== OWNER_EMAIL) { lErr(`Yeh panel sirf ${OWNER_EMAIL} ke liye hai.`); signOut(auth); return; }
+  $("#who").textContent = user.email; $("#login").hidden = true; $("#app").hidden = false; lErr("");
+  const h = new Date().getHours();
+  $("#greet").innerHTML = `${h < 12 ? "Subah bakhair" : h < 17 ? "Assalam o Alaikum" : "Shaam bakhair"}, <b>Nasir Khan</b>`;
+  $("#hdate").textContent = new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  show(view);
   unsubs.push(onSnapshot(doc(db, "meta", "brand"), d => { if (d.exists()) { brand = d.data(); paintBrand(); } }, () => {}));
   unsubs.push(onSnapshot(collection(db, "licenses"), s => { schools = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }, e => toast("Schools load nahi hue: " + e.code)));
   unsubs.push(onSnapshot(query(collection(db, "keys"), orderBy("createdAt", "desc"), limit(200)), s => { keys = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }));
 });
 
-/* Key generator */
-$("#seg").onclick = e => {
-  const b = e.target.closest("button"); if (!b) return;
-  [...$("#seg").children].forEach(x => x.classList.toggle("on", x === b));
-  curType = b.dataset.t; $("#kDays").value = b.dataset.d;
-  $("#daysF").style.visibility = curType === "life" ? "hidden" : "visible";
-  $("#kDays").readOnly = curType === "year";
-};
-$("#kGen").onclick = async () => {
-  const days = curType === "life" ? 0 : Math.max(1, Number($("#kDays").value) || 0);
-  const key = genKey(), note = $("#kNote").value.trim(), phone = $("#kPhone").value.trim(), amount = Number($("#kAmt").value) || 0;
-  try {
-    await setDoc(doc(db, "keys", key), { type: curType, days, note, phone, amount, used: false, createdAt: Date.now() });
-    const what = curType === "life" ? "Lifetime" : `${days} din`;
-    const msg = `Assalam o Alaikum${note ? " " + note : ""}!\nPower Haazri activation key (${what}):\n${key}\n\nApp: ${APP_URL}\nGmail se login karke key darj karein.\n- Power Technology Shinkiari\n0310-5802297, 0333-9764399`;
-    $("#kOut").innerHTML = `<div class="keybox"><code>${key}</code><span class="muted">${what}</span><button class="btn sm" id="kCopy">Copy</button>${phone ? `<a class="btn sm gold" target="_blank" rel="noopener" href="https://wa.me/${normWa(phone)}?text=${encodeURIComponent(msg)}">WhatsApp client ko</a>` : ""}</div>`;
-    $("#kCopy").onclick = () => navigator.clipboard.writeText(msg).then(() => toast("Key aur message copy ho gaye"));
-  } catch (e) { toast("Key nahi bani: " + (e.code || e.message)); }
-};
-
-/* Status helper */
+/* ---------- Status ---------- */
 function status(l) {
   if (l.locked) return ["Band", "c-bad"];
   if (l.life) return ["Lifetime", "c-ok"];
@@ -268,136 +511,229 @@ function status(l) {
   if (now < end + GRACE_DAYS * DAY) return ["Mohlat", "c-warn"];
   return ["Khatam", "c-bad"];
 }
+const validTxt = l => l.life ? "Hamesha" : l.validUntil ? fmt(l.validUntil.toMillis()) + " tak" : "—";
+const schoolRow = l => { const [st, cls] = status(l); return `<button class="row" data-sid="${esc(l.id)}"><span class="av">${esc(initials(l.schoolName))}</span><span class="grow"><b>${esc(l.schoolName || "School")}</b><span>${esc(l.id)} · ${TYPE[l.type] || "—"} · ${validTxt(l)}</span></span><span class="end"><span class="chip ${cls}">${st}</span></span>${ic("chev", "ic chev")}</button>`; };
 
+/* ---------- Render ---------- */
 function render() {
-  const active = schools.filter(l => ["c-ok", "c-warn"].includes(status(l)[1])).length;
+  const S = schools.map(l => ({ l, s: status(l) }));
+  const active = S.filter(x => ["c-ok", "c-warn"].includes(x.s[1])).length;
+  const warnN = S.filter(x => x.s[1] === "c-warn").length, badN = S.filter(x => x.s[1] === "c-bad").length;
   const earned = keys.filter(k => k.used).reduce((a, k) => a + (Number(k.amount) || 0), 0);
-  const IC = { s: '<path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/>', a: '<path d="M20 6 9 17l-5-5"/>', k: '<circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 9.2-9.2M17 6l3 3M14 9l2 2"/>', r: '<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>' };
-  const ic = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[k]}</svg>`;
-  $("#stats").innerHTML = `<div><i class="i1">${ic("s")}</i><p style="margin:0"><b>${schools.length}</b><span>Kul schools</span></p></div><div><i class="i2">${ic("a")}</i><p style="margin:0"><b>${active}</b><span>Chalu schools</span></p></div><div><i class="i3">${ic("k")}</i><p style="margin:0"><b>${keys.filter(k => !k.used).length}</b><span>Na-istemal keys</span></p></div><div><i class="i4">${ic("r")}</i><p style="margin:0"><b>Rs ${earned.toLocaleString()}</b><span>Kul kamai</span></p></div>`;
+  $("#stats").innerHTML = [
+    ["school", "t-blue", schools.length, "Kul schools"], ["check", "t-ok", active, "Chalu schools"],
+    ["key", "t-warn", keys.filter(k => !k.used).length, "Na-istemal keys"], ["rs", "t-vio", "Rs " + earned.toLocaleString(), "Kul kamai"]
+  ].map(([i, t, b, s]) => `<div class="stat"><i class="${t}">${ic(i)}</i><div><b>${b}</b><span>${s}</span></div></div>`).join("");
 
-  const q = ($("#sSearch").value || "").trim().toLowerCase(), F = { ok: ["c-ok"], warn: ["c-warn"], bad: ["c-bad"] }[sFilter];
-  const sorted = [...schools].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
-    .filter(l => !q || [l.schoolName, l.id, l.ownerEmail, l.phone].some(v => String(v || "").toLowerCase().includes(q)))
-    .filter(l => !F || F.includes(status(l)[1]) || (sFilter === "bad" && l.locked));
-  $("#schTable").innerHTML = sorted.length ? `<tr><th>School</th><th>Rabta</th><th>License</th><th>Status</th><th>Amal</th></tr>` + sorted.map(l => {
-    const [st, cls] = status(l);
-    const ini = String(l.schoolName || "S").split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase();
-    return `<tr><td><div class="sname"><span class="sav">${esc(ini)}</span><div><b>${esc(l.schoolName)}</b><br><span class="muted" style="font-size:.8rem">ID: ${esc(l.id)}</span></div></div></td>
-      <td data-l="Rabta">${esc(l.ownerEmail)}<br><span class="muted">${esc(l.phone)}</span></td>
-      <td data-l="License">${TYPE[l.type] || "—"}<br><span class="muted">${l.life ? "Hamesha" : l.validUntil ? fmt(l.validUntil.toMillis()) + " tak" : "—"}</span>${l.message ? `<br><span class="muted" style="font-size:.78rem">Msg: ${esc(l.message)}</span>` : ""}</td>
-      <td data-l="Status"><span class="chip ${cls}">${st}</span></td>
-      <td><div class="acts">
-        ${l.locked ? `<button class="btn sm" data-a="unlock" data-id="${l.id}">Unlock</button>` : `<button class="btn sm danger" data-a="lock" data-id="${l.id}">Lock</button>`}
-        <button class="btn sm gold" data-a="days" data-id="${l.id}">Muddat set</button>
-        <button class="btn sm" data-a="m1" data-id="${l.id}">+1 mahina</button>
-        <button class="btn sm" data-a="y1" data-id="${l.id}">+1 saal</button>
-        <button class="btn sm" data-a="date" data-id="${l.id}">Tareekh</button>
-        ${l.life ? "" : `<button class="btn sm" data-a="life" data-id="${l.id}">Lifetime</button>`}
-        <button class="btn sm" data-a="msg" data-id="${l.id}">Message</button>
-        <button class="btn sm gold" data-a="join" data-id="${l.id}">Join code</button>
-        <button class="btn sm" data-a="owner" data-id="${l.id}">Main admin badlein</button>
-        <button class="btn sm gold" data-a="view" data-id="${l.id}">Data dekhein</button>
-        <button class="btn sm danger" data-a="reset" data-id="${l.id}">Reset</button>
-        <button class="btn sm danger" data-a="del" data-id="${l.id}">Delete</button>
-      </div></td></tr>`;
-  }).join("") : `<tr><td class="muted">${schools.length ? "Is talash/filter mein koi school nahi." : "Abhi koi school register nahi hua."}</td></tr>`;
+  // Home: attention list
+  const attn = S.filter(x => x.s[1] !== "c-ok").sort((a, b) => (a.l.validUntil?.toMillis?.() || 0) - (b.l.validUntil?.toMillis?.() || 0)).slice(0, 6);
+  $("#attn").innerHTML = attn.length ? attn.map(x => schoolRow(x.l)).join("") : `<div class="empty">${ic("check")}<br>Sab schools theek chal rahe hain.</div>`;
+  $("#recentKeys").innerHTML = keys.length ? keys.slice(0, 5).map(keyRow).join("") : `<div class="empty">Abhi koi key nahi bani.<br><button class="btn sm gold" data-go="newkey" style="margin-top:10px">Nayi key banayein</button></div>`;
 
-  const nameOf = sid => schools.find(s => s.id === sid)?.schoolName || sid;
-  $("#keyTable").innerHTML = keys.length ? `<tr><th>Key</th><th>Qisam</th><th>Client</th><th>Raqam</th><th>Status</th><th></th></tr>` + keys.map(k => `<tr>
-    <td><code>${k.id}</code><br><span class="muted">${fmt(k.createdAt)}</span></td>
-    <td>${TYPE[k.type]}${k.type !== "life" ? ` (${k.days} din)` : ""}</td>
-    <td>${esc(k.note)}<br><span class="muted">${esc(k.phone)}</span></td>
-    <td>${k.amount ? "Rs " + Number(k.amount).toLocaleString() : "—"}</td>
-    <td>${k.used ? `<span class="chip c-ok">Istemal: ${esc(nameOf(k.schoolId))}</span>` : `<span class="chip c-grey">Na-istemal</span>`}</td>
-    <td>${k.used ? "" : `<button class="btn sm danger" data-del="${k.id}">Delete</button>`}</td></tr>`).join("") : `<tr><td class="muted">Abhi koi key nahi bani.</td></tr>`;
+  // Schools
+  $("#sFilt").innerHTML = [["all", "Sab", schools.length], ["ok", "Chalu", S.filter(x => x.s[1] === "c-ok").length], ["warn", "Jald khatam / mohlat", warnN], ["bad", "Khatam / band", badN]]
+    .map(([f, t, n]) => `<button data-f="${f}" class="${sFilter === f ? "on" : ""}">${t}<em>${n}</em></button>`).join("");
+  const q = ($("#sSearch").value || "").trim().toLowerCase(), F = { ok: "c-ok", warn: "c-warn", bad: "c-bad" }[sFilter];
+  const list = S.sort((a, b) => (b.l.createdAt || 0) - (a.l.createdAt || 0))
+    .filter(x => !q || [x.l.schoolName, x.l.id, x.l.ownerEmail, x.l.phone].some(v => String(v || "").toLowerCase().includes(q)))
+    .filter(x => !F || x.s[1] === F);
+  $("#schList").innerHTML = list.length ? list.map(x => schoolRow(x.l)).join("") : `<div class="empty" style="grid-column:1/-1">${schools.length ? "Is talash/filter mein koi school nahi." : "Abhi koi school register nahi hua."}</div>`;
+
+  // Keys
+  const unused = keys.filter(k => !k.used).length;
+  $("#kFilt").innerHTML = [["all", "Sab", keys.length], ["new", "Na-istemal", unused], ["used", "Istemal shuda", keys.length - unused]]
+    .map(([f, t, n]) => `<button data-f="${f}" class="${kFilter === f ? "on" : ""}">${t}<em>${n}</em></button>`).join("");
+  const kl = keys.filter(k => kFilter === "all" || (kFilter === "new" ? !k.used : k.used));
+  $("#keyList").innerHTML = kl.length ? kl.map(keyRow).join("") : `<div class="empty">Koi key nahi.</div>`;
+
+  if (openSid) renderDetail();
+}
+const nameOf = sid => schools.find(s => s.id === sid)?.schoolName || sid;
+function keyRow(k) {
+  const t = TYPE[k.type] + (k.type !== "life" ? ` · ${k.days} din` : "");
+  return `<button class="row" data-key="${esc(k.id)}"><span class="av" style="background:${k.used ? "var(--okbg)" : "var(--goldbg)"};color:${k.used ? "var(--ok)" : "#9A5F00"}">${ic("key")}</span>
+    <span class="grow"><b class="mono">${esc(k.id)}</b><span>${t}${k.note ? " · " + esc(k.note) : ""}</span></span>
+    <span class="end">${k.used ? `<span class="chip c-ok">Istemal</span>` : `<span class="chip c-grey">Na-istemal</span>`}<small>${k.amount ? "Rs " + Number(k.amount).toLocaleString() : fmt(k.createdAt)}</small></span></button>`;
+}
+function setSFilter(f) { sFilter = f; render(); }
+$("#sSearch").oninput = () => render();
+$("#sFilt").onclick = e => { const b = e.target.closest("button[data-f]"); if (b) setSFilter(b.dataset.f); };
+$("#kFilt").onclick = e => { const b = e.target.closest("button[data-f]"); if (b) { kFilter = b.dataset.f; render(); } };
+document.addEventListener("click", e => {
+  const s = e.target.closest("button[data-sid]"); if (s) return openDetail(s.dataset.sid);
+  const k = e.target.closest("button[data-key]"); if (k) return keyBox(keys.find(x => x.id === k.dataset.key));
+});
+
+/* ---------- Key generator ---------- */
+$("#seg").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  [...$("#seg").children].forEach(x => x.classList.toggle("on", x === b));
+  curType = b.dataset.t; $("#kDays").value = b.dataset.d;
+  $("#daysF").hidden = curType === "life";
+  $("#kDays").readOnly = curType === "year";
+};
+const keyMsg = (k, note) => { const what = k.type === "life" ? "Lifetime" : `${k.days} din`; return `Assalam o Alaikum${note ? " " + note : ""}!\nPower Haazri activation key (${what}):\n${k.id}\n\nApp: ${APP_URL}\nGmail se login karke key darj karein.\n${CONTACT}`; };
+$("#kGen").onclick = async () => {
+  const days = curType === "life" ? 0 : Math.max(1, Number($("#kDays").value) || 0);
+  const key = genKey(), note = $("#kNote").value.trim(), phone = $("#kPhone").value.trim(), amount = Number($("#kAmt").value) || 0;
+  $("#kGen").disabled = true;
+  try {
+    await setDoc(doc(db, "keys", key), { type: curType, days, note, phone, amount, used: false, createdAt: Date.now() });
+    const k = { id: key, type: curType, days }, msg = keyMsg(k, note);
+    $("#kOut").innerHTML = `<div class="keybox"><span class="muted" style="font-size:.8rem">Nayi key · ${curType === "life" ? "Lifetime" : days + " din"}</span><code>${key}</code>
+      <div class="btnrow" style="margin-top:12px"><button class="btn" id="kCopy">${ic("copy")}Copy</button>${phone ? `<button class="btn wa" id="kWa">${ic("wa")}WhatsApp</button>` : ""}</div></div>`;
+    $("#kCopy").onclick = () => copyText(msg, "Key aur message copy ho gaye");
+    if (phone) $("#kWa").onclick = () => openWa(phone, msg);
+    $("#kNote").value = ""; $("#kPhone").value = ""; $("#kAmt").value = 0;
+  } catch (e) { toast("Key nahi bani: " + (e.code || e.message)); }
+  $("#kGen").disabled = false;
+};
+function keyBox(k) {
+  if (!k) return;
+  const msg = keyMsg(k, k.note);
+  const m = modal(`<h3 class="mono" style="font-size:1.25rem">${esc(k.id)}</h3><p class="sub">${TYPE[k.type]}${k.type !== "life" ? ` · ${k.days} din` : ""} · bani ${fmt(k.createdAt)}</p>
+    <div class="info" style="margin:0 0 4px"><div><span>Client</span><b>${esc(k.note || "—")}</b></div><div><span>Phone</span><b>${esc(k.phone || "—")}</b></div>
+    <div><span>Raqam</span><b>${k.amount ? "Rs " + Number(k.amount).toLocaleString() : "—"}</b></div><div><span>Status</span><b>${k.used ? "Istemal: " + esc(nameOf(k.schoolId)) : "Na-istemal"}</b></div></div>
+    <div class="mfoot"><button class="btn" id="kc">${ic("copy")}Copy</button>${!k.used && k.phone ? `<button class="btn wa" id="kw">${ic("wa")}WhatsApp</button>` : ""}</div>
+    ${k.used ? "" : `<button class="btn danger block" id="kd" style="margin-top:10px">${ic("trash")}Key delete karein</button>`}`);
+  m.querySelector("#kc").onclick = () => copyText(msg, "Key aur message copy ho gaye");
+  m.querySelector("#kw")?.addEventListener("click", () => openWa(k.phone, msg));
+  m.querySelector("#kd")?.addEventListener("click", async () => {
+    if (!await ask("Key delete karein?", `<span class="mono">${esc(k.id)}</span> hamesha ke liye hat jayegi.`, "Delete", true)) return;
+    deleteDoc(doc(db, "keys", k.id)).then(() => toast("Key delete ho gayi")).catch(err => toast("Nahi hui: " + err.code));
+  });
 }
 
-/* School actions */
-$("#schTable").onclick = e => {
-  const b = e.target.closest("button[data-a]"); if (!b) return;
-  const l = schools.find(s => s.id === b.dataset.id), ref = doc(db, "licenses", l.id);
-  const base = Math.max(Date.now(), l.validUntil?.toMillis?.() || 0);
+/* ---------- School detail ---------- */
+function openDetail(sid) { openSid = sid; $("#detail").hidden = false; renderDetail(); $("#detail").scrollTop = 0; }
+function closeDetail() { openSid = null; $("#detail").hidden = true; }
+function renderDetail() {
+  const l = schools.find(s => s.id === openSid);
+  if (!l) { closeDetail(); return; }
+  const [st, cls] = status(l);
+  const tile = (a, i, t, label, extra = "") => `<button class="act ${extra}" data-a="${a}"><i class="${t}">${ic(i)}</i>${label}</button>`;
+  $("#detail").innerHTML = `
+    <div class="dhead"><div class="bar"><button class="ibtn" id="dBack" aria-label="Wapas">${ic("back")}</button><b>School ki tafseel</b></div>
+      <div class="dprof"><span class="av">${esc(initials(l.schoolName))}</span><div style="min-width:0"><h2>${esc(l.schoolName || "School")}</h2><p>ID ${esc(l.id)}</p><span class="chip ${cls}" style="margin-top:8px">${st}</span></div></div></div>
+    <div class="dbody">
+      <div class="info">
+        <div><span>License</span><b>${TYPE[l.type] || "—"}</b></div>
+        <div><span>Kab tak</span><b>${validTxt(l)}</b></div>
+        <div class="wide"><span>Main admin (Gmail)</span><b>${esc(l.ownerEmail || "—")}</b></div>
+        <div class="wide"><span>Phone</span><b>${esc(l.phone || "—")}</b></div>
+      </div>
+      ${l.message ? `<div class="banner">${ic("msg")}<div><b>School ko dikhne wala message:</b><br>${esc(l.message)}</div></div>` : ""}
+      ${l.phone ? `<div class="btnrow" style="margin-top:12px"><button class="btn" data-a="call">${ic("phone")}Call</button><button class="btn wa" data-a="wa">${ic("wa")}WhatsApp</button></div>` : ""}
+
+      <div class="sec"><h3>License</h3></div>
+      <div class="agrid">
+        ${tile("days", "clock", "t-warn", "Muddat set")}
+        ${tile("m1", "plus", "t-blue", "+1 mahina")}
+        ${tile("y1", "cal", "t-blue", "+1 saal")}
+        ${tile("date", "cal", "t-vio", "Tareekh")}
+        ${l.life ? "" : tile("life", "inf", "t-ok", "Lifetime")}
+        ${tile("msg", "msg", "t-vio", "Message")}
+      </div>
+      <div class="lockbar" style="margin-top:10px"><i class="${l.locked ? "t-bad" : "t-ok"}" style="width:40px;height:40px;border-radius:12px;display:grid;place-items:center">${ic(l.locked ? "lock" : "unlock")}</i>
+        <div class="grow"><b>${l.locked ? "School band (lock) hai" : "School chalu hai"}</b><span>${l.locked ? "Scan aur SMS band hain" : "Fees na milne par lock kar sakte hain"}</span></div>
+        ${l.locked ? `<button class="btn sm primary" data-a="unlock">Unlock</button>` : `<button class="btn sm danger" data-a="lock">Lock</button>`}</div>
+
+      <div class="sec"><h3>Access aur data</h3></div>
+      <div class="agrid">
+        ${tile("join", "link", "t-warn", "Join code")}
+        ${tile("owner", "crown", "t-warn", "Main admin badlein")}
+        ${tile("view", "chart", "t-blue", "Data dekhein")}
+      </div>
+
+      <div class="sec"><h3 style="color:var(--bad)">Khatarnak</h3></div>
+      <div class="agrid">
+        ${tile("reset", "reset", "t-bad", "Data reset", "bad")}
+        ${tile("del", "trash", "t-bad", "Account delete", "bad")}
+      </div>
+    </div>`;
+  $("#dBack").onclick = closeDetail;
+}
+$("#detail").onclick = e => { const b = e.target.closest("[data-a]"); if (b && openSid) schoolAction(b.dataset.a, schools.find(s => s.id === openSid)); };
+
+function schoolAction(a, l) {
+  if (!l) return;
+  const ref = doc(db, "licenses", l.id), base = Math.max(Date.now(), l.validUntil?.toMillis?.() || 0);
   const save = (data, okMsg) => updateDoc(ref, data).then(() => toast(okMsg)).catch(err => toast("Nahi hua: " + err.code));
-  const a = b.dataset.a;
+  if (a === "call") return openExt("tel:" + String(l.phone).replace(/[^\d+]/g, ""));
+  if (a === "wa") return openWa(l.phone, `Assalam o Alaikum! ${l.schoolName || ""}\n`);
+  if (a === "view") return viewSchool(l);
+  if (a === "join") return joinCodeBox(l);
+  if (a === "owner") return ownerBox(l);
+  if (a === "reset") return askWipe(l, false);
+  if (a === "del") return askWipe(l, true);
+  if (a === "unlock") return save({ locked: false, message: "" }, "School unlock ho gaya");
+  if (a === "m1") return ask("1 mahina barhayein?", `${esc(l.schoolName)} ki muddat 30 din barh jayegi — ${fmt(base + 30 * DAY)} tak.`, "Barhayein").then(ok => ok && save({ validUntil: Timestamp.fromMillis(base + 30 * DAY), type: l.life ? "life" : "period" }, "1 mahina barh gaya"));
+  if (a === "y1") return ask("1 saal barhayein?", `${esc(l.schoolName)} ki muddat 365 din barh jayegi — ${fmt(base + 365 * DAY)} tak.`, "Barhayein").then(ok => ok && save({ validUntil: Timestamp.fromMillis(base + 365 * DAY), type: l.life ? "life" : "year" }, "1 saal barh gaya"));
+  if (a === "life") return ask("Lifetime license dein?", `${esc(l.schoolName)} hamesha ke liye chalu rahega.`, "Lifetime karein").then(ok => ok && save({ life: true, type: "life", validUntil: Timestamp.fromMillis(Date.UTC(2099, 11, 31)) }, "Lifetime ho gaya"));
   if (a === "lock") {
-    const m = modal(`<h3>${esc(l.schoolName)} lock karein?</h3><p class="muted">School ka data mehfooz rahega, sirf dekh sakenge. Scan aur SMS band ho jayenge.</p>
+    const m = modal(`<h3>${esc(l.schoolName)} lock karein?</h3><p class="sub">School ka data mehfooz rahega, sirf dekh sakenge. Scan aur SMS band ho jayenge.</p>
       <label class="field"><span>School ko dikhne wala message</span><textarea class="input" id="mMsg" rows="3">Fees pending hai. Barah-e-karam Power Technology se rabta karein: 0310-5802297</textarea></label>
-      <div class="acts" style="justify-content:flex-end"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk">Lock karein</button></div>`);
+      <div class="mfoot"><button class="btn" id="mX">Wapas</button><button class="btn dfill" id="mOk">${ic("lock")}Lock karein</button></div>`);
     m.querySelector("#mX").onclick = closeModal;
     m.querySelector("#mOk").onclick = () => { save({ locked: true, message: m.querySelector("#mMsg").value.trim() }, "School lock ho gaya"); closeModal(); };
   }
-  if (a === "view") viewSchool(l);
-  if (a === "join") joinCodeBox(l);
-  if (a === "owner") ownerBox(l);
   if (a === "days") {
     const P = [["2 din", 2], ["7 din", 7], ["15 din", 15], ["1 mahina", 30], ["2 mahine", 60], ["3 mahine", 90], ["6 mahine", 180], ["1 saal", 365]];
-    const cur = l.life ? "Lifetime" : l.validUntil ? fmt(l.validUntil.toMillis()) + " tak" : "—";
-    const m = modal(`<h3>Muddat set karein — ${esc(l.schoolName)}</h3>
-      <p class="muted" style="margin:0 0 10px">Abhi: <b>${cur}</b>. Yahan se muddat <b>aaj se</b> nayi lagti hai (purani muddat hat jati hai, kam bhi ho sakti hai).</p>
-      <div class="acts" id="dQuick" style="margin-bottom:12px">${P.map(([t, d]) => `<button class="btn sm" data-d="${d}">${t}</button>`).join("")}</div>
-      <label class="field"><span>Ya khud din likhein (aaj se)</span><input class="input" type="number" min="1" id="dN" value="30"></label>
-      <label class="field" style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="dAdd"> <span style="margin:0">Aaj se nahi — mojooda muddat ke <b>upar jama</b> karein</span></label>
-      <p class="muted" id="dPrev" style="font-size:.88rem"></p>
-      <div class="acts" style="justify-content:flex-end"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk">Save</button></div>`);
+    const cur = validTxt(l);
+    const m = modal(`<h3>Muddat set karein</h3><p class="sub">${esc(l.schoolName)} · abhi: <b>${cur}</b>. Muddat <b>aaj se</b> nayi lagti hai.</p>
+      <div class="chips" id="dQuick" style="flex-wrap:wrap">${P.map(([t, d]) => `<button data-d="${d}" class="${d === 30 ? "on" : ""}">${t}</button>`).join("")}</div>
+      <label class="field"><span>Ya khud din likhein</span><input class="input" type="number" inputmode="numeric" min="1" id="dN" value="30"></label>
+      <label style="display:flex;gap:10px;align-items:center;font-size:.88rem;margin-bottom:10px"><input type="checkbox" id="dAdd" style="width:18px;height:18px"> Mojooda muddat ke <b>upar jama</b> karein</label>
+      <div class="banner" id="dPrev" style="background:var(--bluebg);color:#1F4F9E"></div>
+      <div class="mfoot"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk">Save</button></div>`);
     const nIn = m.querySelector("#dN"), add = m.querySelector("#dAdd");
     const endFor = () => { const n = Math.max(1, Math.round(Number(nIn.value) || 0)); const from = add.checked ? Math.max(Date.now(), l.life ? 0 : (l.validUntil?.toMillis?.() || 0)) : Date.now(); const e = new Date(from + n * DAY); e.setHours(23, 59, 0, 0); return { n, end: e.getTime() }; };
     const prev = () => { const { n, end } = endFor(); m.querySelector("#dPrev").textContent = `${n} din — ${fmt(end)} tak chalega${l.life ? " (Lifetime khatam ho jayega)" : ""}.`; };
-    m.querySelector("#dQuick").onclick = e => { const b = e.target.closest("button[data-d]"); if (!b) return; nIn.value = b.dataset.d; prev(); };
+    m.querySelector("#dQuick").onclick = e => { const b = e.target.closest("button[data-d]"); if (!b) return; [...m.querySelectorAll("#dQuick button")].forEach(x => x.classList.toggle("on", x === b)); nIn.value = b.dataset.d; prev(); };
     nIn.oninput = prev; add.onchange = prev; prev();
     m.querySelector("#mX").onclick = closeModal;
     m.querySelector("#mOk").onclick = () => { const { n, end } = endFor(); save({ validUntil: Timestamp.fromMillis(end), life: false, type: n <= 15 ? "trial" : n >= 365 ? "year" : "period" }, `Muddat ${fmt(end)} tak set ho gayi`); closeModal(); };
   }
-  if (a === "reset") askWipe(l, false);
-  if (a === "del") askWipe(l, true);
-  if (a === "unlock") save({ locked: false, message: "" }, "School unlock ho gaya");
-  if (a === "m1") save({ validUntil: Timestamp.fromMillis(base + 30 * DAY), type: l.life ? "life" : "period" }, "1 mahina barh gaya");
-  if (a === "y1") save({ validUntil: Timestamp.fromMillis(base + 365 * DAY), type: l.life ? "life" : "year" }, "1 saal barh gaya");
-  if (a === "life") save({ life: true, type: "life", validUntil: Timestamp.fromMillis(Date.UTC(2099, 11, 31)) }, "Lifetime ho gaya");
   if (a === "date") {
     const cur = l.validUntil ? new Date(l.validUntil.toMillis()).toISOString().slice(0, 10) : "";
-    const m = modal(`<h3>Muddat ki tareekh</h3><label class="field"><span>Kis tareekh tak chalega</span><input class="input" type="date" id="mD" value="${cur}"></label>
-      <p class="muted" style="font-size:.85rem">Lifetime hata kar muqarrar tareekh lagani ho to yahan se karein.</p>
-      <div class="acts" style="justify-content:flex-end"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk">Save</button></div>`);
+    const m = modal(`<h3>Muddat ki tareekh</h3><p class="sub">Lifetime hata kar muqarrar tareekh lagani ho to yahan se karein.</p>
+      <label class="field"><span>Kis tareekh tak chalega</span><input class="input" type="date" id="mD" value="${cur}"></label>
+      <div class="mfoot"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk">Save</button></div>`);
     m.querySelector("#mX").onclick = closeModal;
     m.querySelector("#mOk").onclick = () => { const v = m.querySelector("#mD").value; if (!v) return; const [y, mo, d] = v.split("-").map(Number); save({ validUntil: Timestamp.fromMillis(new Date(y, mo - 1, d, 23, 59).getTime()), life: false, type: l.type === "life" ? "period" : l.type }, "Tareekh save ho gayi"); closeModal(); };
   }
   if (a === "msg") {
-    const m = modal(`<h3>School ke liye message</h3><p class="muted" style="font-size:.85rem">School ke dashboard par upar patti mein nazar aayega (lock kiye baghair bhi). Khali chhorne se hat jayega.</p>
-      <textarea class="input" id="mMsg" rows="3">${esc(l.message || "")}</textarea>
-      <div class="acts" style="justify-content:flex-end;margin-top:12px"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk">Save</button></div>`);
+    const m = modal(`<h3>School ke liye message</h3><p class="sub">School ke dashboard par upar patti mein nazar aayega (lock kiye baghair bhi). Khali chhorne se hat jayega.</p>
+      <textarea class="input" id="mMsg" rows="4">${esc(l.message || "")}</textarea>
+      <div class="mfoot"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk">Save</button></div>`);
     m.querySelector("#mX").onclick = closeModal;
     m.querySelector("#mOk").onclick = () => { save({ message: m.querySelector("#mMsg").value.trim() }, "Message save ho gaya"); closeModal(); };
   }
-};
-/* ---- Join code dekhna / WhatsApp par bhejna ---- */
-function genCode(n) { const c = "23456789ABCDEFGHJKMNPQRSTUVWXYZ"; return [...crypto.getRandomValues(new Uint8Array(n))].map(x => c[x % c.length]).join(""); }
+}
+
+/* ---------- Join code ---------- */
 async function joinCodeBox(l) {
-  const m = modal(`<h3>Join code — ${esc(l.schoolName)}</h3><p class="muted">Load ho raha hai…</p>`);
+  const m = modal(`<h3>Join code</h3><p class="sub">Load ho raha hai…</p>`);
   let sc;
   try { sc = await getDoc(doc(db, "schools", l.id)); }
-  catch (e) { m.innerHTML = `<h3>Join code load nahi hua</h3><p class="muted">${esc(e.code || e.message)}</p><button class="btn" id="mX">Band</button>`; m.querySelector("#mX").onclick = closeModal; return; }
+  catch (e) { m.innerHTML = `<h3>Join code load nahi hua</h3><p class="sub">${esc(e.code || e.message)}</p><div class="mfoot"><button class="btn" id="mX">Band</button></div>`; m.querySelector("#mX").onclick = closeModal; return; }
   const S2 = sc.data() || {};
   let code = S2.joinCode || "";
-  const msgFor = () => `Assalam o Alaikum!\n${S2.schoolName || l.schoolName || "School"} — Power Haazri mein join karne ke liye:\n\nSchool ID: ${l.id}\nJoin code: ${code}\n\nApp: ${APP_URL}\n1) Apne Gmail se login karein\n2) "Mojooda school join" chunein\n3) School ID aur Join code darj karke "School join karein" dabayein.\n- Power Technology Shinkiari\n0310-5802297, 0333-9764399`;
+  const msgFor = () => `Assalam o Alaikum!\n${S2.schoolName || l.schoolName || "School"} — Power Haazri mein join karne ke liye:\n\nSchool ID: ${l.id}\nJoin code: ${code}\n\nApp: ${APP_URL}\n1) Apne Gmail se login karein\n2) "Mojooda school join" chunein\n3) School ID aur Join code darj karke "School join karein" dabayein.\n${CONTACT}`;
   m.innerHTML = `<h3>Join code — ${esc(S2.schoolName || l.schoolName)}</h3>
-    <p class="muted" style="margin:0 0 12px;font-size:.88rem">Naya admin/teacher yeh School ID aur Join code daal kar is school mein shamil ho sakta hai.</p>
-    <div class="keybox" style="margin-bottom:8px"><span class="muted">School ID</span><code>${esc(l.id)}</code></div>
-    <div class="keybox" style="margin-bottom:12px"><span class="muted">Join code</span><code id="jcShow">${esc(code || "—")}</code></div>
-    <label class="field"><span>WhatsApp number (jis ko bhejna hai)</span><input class="input" id="jcPh" value="${esc(S2.phone || l.phone || "")}" placeholder="03xx-xxxxxxx"></label>
-    <div class="acts" style="justify-content:flex-end;max-width:none">
-      <button class="btn sm danger" id="jcNew">Naya code banayein</button>
-      <button class="btn sm" id="jcCopy">Copy</button>
-      <button class="btn sm gold" id="jcWa">WhatsApp par bhejein</button>
-      <button class="btn sm" id="mX">Band</button>
-    </div>`;
-  m.querySelector("#mX").onclick = closeModal;
-  m.querySelector("#jcCopy").onclick = () => { if (!code) return toast("Is school ka join code nahi mila"); navigator.clipboard.writeText(msgFor()).then(() => toast("School ID, join code aur message copy ho gaye"), () => toast("Copy nahi hua")); };
+    <p class="sub">Naya admin/teacher yeh School ID aur Join code daal kar is school mein shamil ho sakta hai.</p>
+    <div class="grid2" style="gap:10px;margin-bottom:14px">
+      <div class="keybox" style="padding:12px"><span class="muted" style="font-size:.76rem">School ID</span><code style="font-size:1.25rem">${esc(l.id)}</code></div>
+      <div class="keybox" style="padding:12px"><span class="muted" style="font-size:.76rem">Join code</span><code style="font-size:1.25rem" id="jcShow">${esc(code || "—")}</code></div>
+    </div>
+    <label class="field"><span>WhatsApp number (jis ko bhejna hai)</span><input class="input" id="jcPh" inputmode="tel" value="${esc(S2.phone || l.phone || "")}" placeholder="03xx-xxxxxxx"></label>
+    <div class="mfoot" style="margin-top:4px"><button class="btn" id="jcCopy">${ic("copy")}Copy</button><button class="btn wa" id="jcWa">${ic("wa")}WhatsApp</button></div>
+    <button class="btn danger block" id="jcNew" style="margin-top:10px">${ic("reset")}Naya code banayein</button>`;
+  m.querySelector("#jcCopy").onclick = () => { if (!code) return toast("Join code nahi mila"); copyText(msgFor(), "School ID, join code aur message copy ho gaye"); };
   m.querySelector("#jcWa").onclick = () => {
-    if (!code) return toast("Is school ka join code nahi mila — pehle 'Naya code banayein' dabayein");
-    const ph = normWa(m.querySelector("#jcPh").value);
-    if (ph.length < 11) return toast("Sahi WhatsApp number likhein");
-    window.open(`https://wa.me/${ph}?text=${encodeURIComponent(msgFor())}`, "_blank", "noopener");
+    if (!code) return toast("Join code nahi mila — pehle 'Naya code banayein' dabayein");
+    const ph = normWa(m.querySelector("#jcPh").value); if (ph.length < 11) return toast("Sahi WhatsApp number likhein");
+    openWa(ph, msgFor());
   };
   m.querySelector("#jcNew").onclick = async () => {
     if (code && !confirm("Naya code banane se purana code kaam nahi karega. Naya code banayein?")) return;
@@ -406,25 +742,21 @@ async function joinCodeBox(l) {
     catch (e) { toast("Code nahi badla: " + (e.code || e.message)); }
   };
 }
-/* ---- Main admin (school ka malik) badalna ---- */
+
+/* ---------- Main admin badalna ---------- */
 async function ownerBox(l) {
-  const m = modal(`<h3>Main admin badlein — ${esc(l.schoolName)}</h3><p class="muted">Load ho raha hai…</p>`);
-  const fail = e => { m.innerHTML = `<h3>Load nahi hua</h3><p class="muted">${esc(e.code || e.message)}</p><button class="btn" id="mX">Band</button>`; m.querySelector("#mX").onclick = closeModal; };
+  const m = modal(`<h3>Main admin badlein</h3><p class="sub">Load ho raha hai…</p>`);
   let sc, us;
-  try { [sc, us] = await Promise.all([getDoc(doc(db, "schools", l.id)), getDocs(query(collection(db, "users"), where("schoolId", "==", l.id)))]); } catch (e) { return fail(e); }
+  try { [sc, us] = await Promise.all([getDoc(doc(db, "schools", l.id)), getDocs(query(collection(db, "users"), where("schoolId", "==", l.id)))]); }
+  catch (e) { m.innerHTML = `<h3>Load nahi hua</h3><p class="sub">${esc(e.code || e.message)}</p><div class="mfoot"><button class="btn" id="mX">Band</button></div>`; m.querySelector("#mX").onclick = closeModal; return; }
   const S2 = sc.data() || {}, ownerUid = S2.ownerUid || "";
-  const list = us.docs.map(d => ({ uid: d.id, ...d.data() }));
-  const rows = list.map(u => {
-    const isMain = u.uid === ownerUid;
-    return `<tr><td>${esc(u.email || "(email nahi)")}<br><span class="muted" style="font-size:.78rem">Join: ${u.joinedAt ? fmt(u.joinedAt) : "—"}</span></td>
-      <td>${isMain ? '<span class="chip c-ok">Main admin</span>' : '<span class="chip c-grey">Admin</span>'}</td>
-      <td>${isMain ? "" : `<button class="btn sm gold" data-mk="${esc(u.uid)}">Main admin banayein</button>`}</td></tr>`;
-  }).join("");
-  m.innerHTML = `<h3>Main admin badlein — ${esc(S2.schoolName || l.schoolName)}</h3>
-    <p class="muted" style="margin:0 0 10px;font-size:.88rem">Abhi main admin: <b>${esc(S2.ownerEmail || "—")}</b></p>
-    <p class="muted" style="margin:0 0 12px;font-size:.85rem">Agar client apni Gmail bhool gaya hai: woh nayi Gmail se app khol kar <b>Join code</b> ke zariye school join kare. Phir woh nayi Gmail yahan list mein aa jayegi — us ke saamne <b>"Main admin banayein"</b> dabayein. Data wahi rahega.</p>
-    <div class="tablewrap"><table><tr><th>Gmail</th><th>Role</th><th></th></tr>${rows || `<tr><td class="muted" colspan="3">Is school mein koi admin nahi mila.</td></tr>`}</table></div>
-    <div class="acts" style="justify-content:flex-end;max-width:none;margin-top:12px"><button class="btn" id="mX">Band</button></div>`;
+  const list = us.docs.map(d => ({ uid: d.id, ...d.data() })).sort((a, b) => (a.uid === ownerUid ? -1 : b.uid === ownerUid ? 1 : 0));
+  m.innerHTML = `<h3>Main admin badlein</h3>
+    <p class="sub">Client apni Gmail bhool jaye to: woh nayi Gmail se app khol kar <b>Join code</b> se school join kare. Phir woh Gmail yahan list mein aa jayegi — us ke saamne <b>"Main banayein"</b> dabayein. Data wahi rahega.</p>
+    <div class="list">${list.map(u => { const isMain = u.uid === ownerUid; return `<div class="row"><span class="av" style="width:36px;height:36px;font-size:.8rem;${isMain ? "background:var(--goldbg);color:#9A5F00" : ""}">${isMain ? ic("crown") : esc(initials(u.email))}</span>
+      <span class="grow"><b style="font-weight:500">${esc(u.email || "(email nahi)")}</b><span>${isMain ? "Main admin" : "Admin"} · join ${u.joinedAt ? fmt(u.joinedAt) : "—"}</span></span>
+      ${isMain ? `<span class="chip c-ok">Main</span>` : `<button class="btn sm gold" data-mk="${esc(u.uid)}">Main banayein</button>`}</div>`; }).join("") || `<div class="empty">Is school mein koi admin nahi mila.</div>`}</div>
+    <div class="mfoot"><button class="btn" id="mX">Band</button></div>`;
   m.querySelector("#mX").onclick = closeModal;
   m.querySelectorAll("button[data-mk]").forEach(btn => btn.onclick = async () => {
     const u = list.find(x => x.uid === btn.dataset.mk); if (!u) return;
@@ -437,18 +769,16 @@ async function ownerBox(l) {
       b.update(doc(db, "users", u.uid), { role: "main" });
       if (ownerUid && ownerUid !== u.uid && list.some(x => x.uid === ownerUid)) b.update(doc(db, "users", ownerUid), { role: "admin" });
       await b.commit();
-      toast(`${u.email} ab main admin hai`);
-      ownerBox(l);
-    } catch (e) { btn.disabled = false; btn.textContent = "Main admin banayein"; toast("Nahi hua: " + (e.code || e.message)); }
+      toast(`${u.email} ab main admin hai`); ownerBox(l);
+    } catch (e) { btn.disabled = false; btn.textContent = "Main banayein"; toast("Nahi hua: " + (e.code || e.message)); }
   });
 }
-/* ---- School ka data dekhna ---- */
+
+/* ---------- School ka data ---------- */
 const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
 const tm = ms => ms ? new Date(ms).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }) : "";
-function csvDl(name, rows) { const t = rows.map(r => r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\n"); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["\ufeff" + t], { type: "text/csv" })); a.download = name; a.click(); }
 async function viewSchool(l) {
-  const m = modal(`<h3>${esc(l.schoolName)}</h3><p class="muted">Data load ho raha hai…</p>`);
-  m.style.maxWidth = "960px"; m.style.maxHeight = "90vh"; m.style.overflow = "auto";
+  const m = modal(`<h3>${esc(l.schoolName)}</h3><p class="sub">Data load ho raha hai…</p>`, true);
   try {
     const sid = l.id, sub = n => collection(db, "schools", sid, n);
     const [sc, users, studs, att, sms] = await Promise.all([
@@ -459,18 +789,19 @@ async function viewSchool(l) {
     const at = att.docs.map(d => d.data()), sm = sms.docs.map(d => d.data());
     const cnt = k => sm.filter(x => x.status === k).length;
     const present = at.filter(x => x.in).length, late = at.filter(x => x.status === "late").length;
-    m.innerHTML = `<div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">${S2.logo ? `<img src="${S2.logo}" style="width:48px;height:48px;object-fit:contain;border-radius:8px;border:1px solid var(--line)">` : ""}<div style="flex:1"><h3 style="margin:0">${esc(S2.schoolName || l.schoolName)}</h3><span class="muted">ID ${esc(sid)} · ${esc(S2.phone || "")} · ${esc(S2.address || "")}</span></div><button class="btn sm" id="vX">Band</button></div>
-      <div class="stats" style="margin-bottom:14px"><div><b>${st.length}</b><span>Students</span></div><div><b>${present}</b><span>Aaj aaye</span></div><div><b>${late}</b><span>Aaj late</span></div><div><b>${cnt("sent")} / ${cnt("pending") + cnt("sending")} / ${cnt("failed")}</b><span>SMS: gaye / queue / fail (aakhri 40)</span></div></div>
-      <h3>Admins</h3><div class="tablewrap"><table>${users.docs.map(d => { const u = d.data(); return `<tr><td>${esc(u.email)}</td><td>${u.role === "main" ? "Main admin" : "Admin"}</td><td class="muted">${tm(u.joinedAt)}</td></tr>`; }).join("") || `<tr><td class="muted">Koi nahi</td></tr>`}</table></div>
-      <h3 style="margin-top:14px">Aaj ki haazri (${today()})</h3><div class="tablewrap"><table><tr><th>ID</th><th>Naam</th><th>Class</th><th>Aamad</th><th>Rawangi</th><th>Status</th></tr>${at.sort((a, b) => String(a.in || "").localeCompare(String(b.in || ""))).map(x => `<tr><td>${esc(x.sid)}</td><td>${esc(x.name)}</td><td>${esc(x.cls)}</td><td>${esc(x.in || "")}</td><td>${esc(x.out || "")}</td><td>${esc(x.status || "")}</td></tr>`).join("") || `<tr><td class="muted" colspan="6">Aaj abhi koi scan nahi</td></tr>`}</table></div>
-      <h3 style="margin-top:14px">Haal hi ke SMS</h3><div class="tablewrap"><table><tr><th>Waqt</th><th>Student</th><th>Number</th><th>Qisam</th><th>Status</th></tr>${sm.map(x => `<tr><td>${tm(x.ts)}</td><td>${esc(x.name)}</td><td>${esc(x.to)}</td><td>${esc(x.type)}</td><td>${esc(x.status)}${x.error ? `<br><span class="muted" style="font-size:.78rem">${esc(x.error)}</span>` : ""}</td></tr>`).join("") || `<tr><td class="muted" colspan="5">Koi SMS nahi</td></tr>`}</table></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px"><h3 style="margin:0">Students (${st.length})</h3><button class="btn sm" id="vCsv">CSV download</button></div>
+    m.innerHTML = `<div style="display:flex;gap:12px;align-items:center;margin-bottom:14px">${S2.logo ? `<img src="${S2.logo}" style="width:48px;height:48px;object-fit:contain;border-radius:12px;border:1px solid var(--line)">` : `<span class="av">${esc(initials(l.schoolName))}</span>`}<div style="flex:1;min-width:0"><h3 style="margin:0">${esc(S2.schoolName || l.schoolName)}</h3><span class="muted" style="font-size:.8rem">ID ${esc(sid)} · ${esc(S2.phone || "")} · ${esc(S2.address || "")}</span></div><button class="ibtn" id="vX" style="background:var(--paper);color:var(--text)" aria-label="Band">✕</button></div>
+      <div class="minis"><div><b>${st.length}</b><span>Students</span></div><div><b>${present}</b><span>Aaj aaye</span></div><div><b>${late}</b><span>Aaj late</span></div><div><b>${cnt("sent")}/${cnt("pending") + cnt("sending")}/${cnt("failed")}</b><span>SMS gaye/queue/fail</span></div></div>
+      <div class="sec" style="margin-top:6px"><h3>Admins</h3></div><div class="tablewrap"><table>${users.docs.map(d => { const u = d.data(); return `<tr><td>${esc(u.email)}</td><td>${d.id === S2.ownerUid ? "Main admin" : "Admin"}</td><td class="muted">${tm(u.joinedAt)}</td></tr>`; }).join("") || `<tr><td class="muted">Koi nahi</td></tr>`}</table></div>
+      <div class="sec"><h3>Aaj ki haazri (${today()})</h3></div><div class="tablewrap"><table><tr><th>ID</th><th>Naam</th><th>Class</th><th>Aamad</th><th>Rawangi</th><th>Status</th></tr>${at.sort((a, b) => String(a.in || "").localeCompare(String(b.in || ""))).map(x => `<tr><td>${esc(x.sid)}</td><td>${esc(x.name)}</td><td>${esc(x.cls)}</td><td>${esc(x.in || "")}</td><td>${esc(x.out || "")}</td><td>${esc(x.status || "")}</td></tr>`).join("") || `<tr><td class="muted" colspan="6">Aaj abhi koi scan nahi</td></tr>`}</table></div>
+      <div class="sec"><h3>Haal hi ke SMS</h3></div><div class="tablewrap"><table><tr><th>Waqt</th><th>Student</th><th>Number</th><th>Qisam</th><th>Status</th></tr>${sm.map(x => `<tr><td>${tm(x.ts)}</td><td>${esc(x.name)}</td><td>${esc(x.to)}</td><td>${esc(x.type)}</td><td>${esc(x.status)}${x.error ? `<br><span class="muted" style="font-size:.76rem">${esc(x.error)}</span>` : ""}</td></tr>`).join("") || `<tr><td class="muted" colspan="5">Koi SMS nahi</td></tr>`}</table></div>
+      <div class="sec"><h3>Students (${st.length})</h3><button class="btn sm" id="vCsv">${ic("dl")}CSV</button></div>
       <div class="tablewrap"><table><tr><th>ID</th><th>Naam</th><th>Walid</th><th>Class</th><th>Parent phone</th><th>PIN</th></tr>${st.map(x => `<tr><td>${esc(x.id)}</td><td>${esc(x.name)}${x.active === false ? ' <span class="chip c-grey">band</span>' : ""}</td><td>${esc(x.father)}</td><td>${esc(x.cls)}${x.section ? "-" + esc(x.section) : ""}</td><td>${esc(x.phone)}</td><td>${esc(x.pin)}</td></tr>`).join("") || `<tr><td class="muted" colspan="6">Koi student nahi</td></tr>`}</table></div>`;
     m.querySelector("#vX").onclick = closeModal;
     m.querySelector("#vCsv").onclick = () => csvDl(`${sid}-students.csv`, [["id", "name", "father", "class", "section", "phone", "pin", "active"], ...st.map(x => [x.id, x.name, x.father, x.cls, x.section, x.phone, x.pin, x.active !== false ? "yes" : "no"])]);
-  } catch (e) { m.innerHTML = `<h3>Data load nahi hua</h3><p class="muted">${esc(e.code || e.message)}</p><button class="btn" id="vX">Band</button>`; m.querySelector("#vX").onclick = closeModal; }
+  } catch (e) { m.innerHTML = `<h3>Data load nahi hua</h3><p class="sub">${esc(e.code || e.message)}</p><div class="mfoot"><button class="btn" id="vX">Band</button></div>`; m.querySelector("#vX").onclick = closeModal; }
 }
-/* ---- Reset / Delete ---- */
+
+/* ---------- Reset / Delete ---------- */
 async function delAll(refs) { for (let i = 0; i < refs.length; i += 400) { const b = writeBatch(db); refs.slice(i, i + 400).forEach(r => b.delete(r)); await b.commit(); } }
 async function wipe(sid, full) {
   const refs = [];
@@ -483,19 +814,15 @@ async function wipe(sid, full) {
   await delAll(refs); return refs.length;
 }
 function askWipe(l, full) {
-  const m = modal(`<h3>${full ? "School account DELETE" : "School ka data RESET"}: ${esc(l.schoolName)}</h3>
-    <p class="muted">${full ? "School, us ke admins (Gmail link), license, students, haazri, SMS aur parent portal — <b>sab kuch</b> hamesha ke liye delete. Woh Gmail dobara naya school bana sakegi." : "Students, haazri, SMS aur parent portal delete. School, settings, admins aur license rahenge."} <b>Yeh wapas nahi hoga.</b></p>
-    <label class="field"><span>Tasdeeq ke liye School ID <b>${esc(l.id)}</b> likhein</span><input class="input" id="wIn" autocomplete="off"></label>
-    <div class="acts" style="justify-content:flex-end"><button class="btn" id="mX">Wapas</button><button class="btn primary" id="mOk" disabled style="background:var(--bad);border-color:var(--bad)">${full ? "Delete karein" : "Reset karein"}</button></div>`);
+  const m = modal(`<h3 style="color:var(--bad)">${full ? "School account DELETE" : "School ka data RESET"}</h3>
+    <p class="sub"><b>${esc(l.schoolName)}</b> — ${full ? "school, us ke admins (Gmail link), license, students, haazri, SMS aur parent portal — <b>sab kuch</b> hamesha ke liye delete. Woh Gmail dobara naya school bana sakegi." : "students, haazri, SMS aur parent portal delete. School, settings, admins aur license rahenge."} <b>Yeh wapas nahi hoga.</b></p>
+    <label class="field"><span>Tasdeeq ke liye School ID <b>${esc(l.id)}</b> likhein</span><input class="input mono" id="wIn" autocomplete="off" autocapitalize="characters"></label>
+    <div class="mfoot"><button class="btn" id="mX">Wapas</button><button class="btn dfill" id="mOk" disabled>${full ? "Delete karein" : "Reset karein"}</button></div>`);
   const inp = m.querySelector("#wIn"), ok = m.querySelector("#mOk");
   inp.oninput = () => { ok.disabled = inp.value.trim().toUpperCase() !== l.id.toUpperCase(); };
   m.querySelector("#mX").onclick = closeModal;
-  ok.onclick = async () => { ok.disabled = true; ok.textContent = "Ho raha hai…"; try { const n = await wipe(l.id, full); closeModal(); toast(`${full ? "Delete" : "Reset"} ho gaya (${n} record)`); } catch (e) { closeModal(); toast("Nahi hua: " + (e.code || e.message)); } };
+  ok.onclick = async () => { ok.disabled = true; ok.textContent = "Ho raha hai…"; try { const n = await wipe(l.id, full); closeModal(); if (full) closeDetail(); toast(`${full ? "Delete" : "Reset"} ho gaya (${n} record)`); } catch (e) { closeModal(); toast("Nahi hua: " + (e.code || e.message)); } };
 }
-$("#keyTable").onclick = e => {
-  const id = e.target.dataset.del; if (!id) return;
-  if (confirm(`Key ${id} delete karein?`)) deleteDoc(doc(db, "keys", id)).then(() => toast("Delete ho gayi")).catch(err => toast("Nahi hui: " + err.code));
-};
 </script>
 </body>
 </html>

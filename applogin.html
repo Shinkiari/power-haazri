@@ -30,11 +30,14 @@ const cfg = await (await fetch("./config.json", { cache: "no-store" })).json();
 const auth = getAuth(initializeApp(cfg));
 const prov = new GoogleAuthProvider(); prov.setCustomParameters({ prompt: "select_account" });
 const $ = s => document.querySelector(s);
+const OWNER_APP = new URLSearchParams(location.search).get("app") === "owner";
+const SCHEME = OWNER_APP ? "powerhaazriowner" : "powerhaazri";
+if (OWNER_APP) { document.title = "Power Haazri Owner — Gmail login"; }
 function err(m) { $("#err").textContent = m; $("#err").hidden = !m; }
 function done(res) {
   const cred = GoogleAuthProvider.credentialFromResult(res);
   if (!cred || !cred.idToken) return err("Gmail se token nahi mila, dobara koshish karein.");
-  const url = "powerhaazri://auth?t=" + encodeURIComponent(cred.idToken);
+  const url = SCHEME + "://auth?t=" + encodeURIComponent(cred.idToken);
   $("#h").textContent = "Login kamyab"; $("#p").textContent = (res.user.email || "") + " — ab neeche button dabayein.";
   $("#pick").hidden = true; $("#back").hidden = false; $("#back").href = url;
   signOut(auth).catch(() => {});   // browser mein login baqi na rahe

@@ -1,0 +1,375 @@
+name: Owner APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/owner-apk.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Android project banayein
+        run: |
+          mkdir -p 'owner-apk/app'
+          cat > 'owner-apk/app/build.gradle' <<'PH_EOF'
+          plugins { id 'com.android.application' }
+          android {
+              namespace 'pk.powertech.haazriowner'
+              compileSdk 34
+              defaultConfig {
+                  applicationId 'pk.powertech.haazriowner'
+                  minSdk 26
+                  targetSdk 34
+                  versionCode Integer.parseInt(System.getenv('APK_CODE') ?: '1')
+                  versionName '1.' + (System.getenv('APK_CODE') ?: '0')
+              }
+              signingConfigs {
+                  rel {
+                      storeFile file('owner.jks')
+                      storePassword 'powerowner'
+                      keyAlias 'owner'
+                      keyPassword 'powerowner'
+                  }
+              }
+              buildTypes {
+                  release { minifyEnabled false; signingConfig signingConfigs.rel }
+              }
+              compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+          }
+          PH_EOF
+          mkdir -p 'owner-apk/app/src/main'
+          cat > 'owner-apk/app/src/main/AndroidManifest.xml' <<'PH_EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-permission android:name="android.permission.INTERNET" />
+              <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+              <application
+                  android:label="Power Haazri Owner"
+                  android:icon="@mipmap/ic_launcher"
+                  android:roundIcon="@mipmap/ic_launcher"
+                  android:theme="@style/AppTheme"
+                  android:allowBackup="false"
+                  android:usesCleartextTraffic="false">
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true"
+                      android:launchMode="singleTask"
+                      android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden|uiMode"
+                      android:windowSoftInputMode="adjustResize">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                      <intent-filter>
+                          <action android:name="android.intent.action.VIEW" />
+                          <category android:name="android.intent.category.DEFAULT" />
+                          <category android:name="android.intent.category.BROWSABLE" />
+                          <data android:scheme="powerhaazriowner" android:host="auth" />
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          PH_EOF
+          mkdir -p 'owner-apk/app/src/main/java/pk/powertech/haazriowner'
+          cat > 'owner-apk/app/src/main/java/pk/powertech/haazriowner/MainActivity.java' <<'PH_EOF'
+          package pk.powertech.haazriowner;
+
+          import android.app.Activity;
+          import android.content.ActivityNotFoundException;
+          import android.content.ClipData;
+          import android.content.ClipboardManager;
+          import android.content.ContentValues;
+          import android.content.Context;
+          import android.content.Intent;
+          import android.graphics.Color;
+          import android.net.Uri;
+          import android.os.Build;
+          import android.os.Bundle;
+          import android.os.Environment;
+          import android.provider.MediaStore;
+          import android.webkit.JavascriptInterface;
+          import android.webkit.ValueCallback;
+          import android.webkit.WebChromeClient;
+          import android.webkit.WebResourceError;
+          import android.webkit.WebResourceRequest;
+          import android.webkit.WebSettings;
+          import android.webkit.WebView;
+          import android.webkit.WebViewClient;
+          import android.widget.Toast;
+
+          import org.json.JSONObject;
+
+          import java.io.File;
+          import java.io.FileOutputStream;
+          import java.io.OutputStream;
+          import java.nio.charset.StandardCharsets;
+
+          public class MainActivity extends Activity {
+              static final String HOME = "https://shinkiari.github.io/power-haazri/owner.html";
+              static final String SITE = "https://shinkiari.github.io/power-haazri/";
+              static final int FILE_REQ = 7;
+              WebView web;
+              String pendingToken;
+              ValueCallback<Uri[]> fileCb;
+
+              static final String OFFLINE = "<html><head><meta name='viewport' content='width=device-width,initial-scale=1'></head>"
+                  + "<body style='margin:0;font-family:sans-serif;background:#16233F;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;text-align:center'>"
+                  + "<div style='padding:24px'><div style='font-size:46px'>&#9889;</div><h2 style='margin:10px 0 6px'>Internet nahi mila</h2>"
+                  + "<p style='opacity:.75;margin:0 0 22px'>Apna internet / WiFi check karein aur dobara koshish karein.</p>"
+                  + "<button onclick=\"location.href='" + HOME + "'\" style='background:#E8A33D;color:#16233F;border:0;border-radius:12px;padding:14px 28px;font-size:16px;font-weight:bold'>Dobara koshish</button></div></body></html>";
+
+              @Override
+              protected void onCreate(Bundle state) {
+                  super.onCreate(state);
+                  web = new WebView(this);
+                  web.setBackgroundColor(Color.parseColor("#F3F5F9"));
+                  setContentView(web);
+
+                  WebSettings s = web.getSettings();
+                  s.setJavaScriptEnabled(true);
+                  s.setDomStorageEnabled(true);
+                  s.setDatabaseEnabled(true);
+                  s.setSupportMultipleWindows(false);
+                  s.setJavaScriptCanOpenWindowsAutomatically(true);
+                  s.setAllowFileAccess(false);
+                  s.setCacheMode(WebSettings.LOAD_DEFAULT);
+                  s.setUserAgentString(s.getUserAgentString() + " PowerHaazriOwner/1");
+
+                  web.addJavascriptInterface(new Bridge(), "Android");
+                  web.setWebViewClient(new WebViewClient() {
+                      @Override
+                      public boolean shouldOverrideUrlLoading(WebView v, WebResourceRequest r) {
+                          String u = r.getUrl().toString();
+                          if (u.startsWith(SITE) || u.startsWith("about:")) return false;
+                          openExternal(u);
+                          return true;
+                      }
+
+                      @Override
+                      public void onReceivedError(WebView v, WebResourceRequest r, WebResourceError e) {
+                          if (r.isForMainFrame()) v.loadDataWithBaseURL(null, OFFLINE, "text/html", "utf-8", null);
+                      }
+                  });
+                  web.setWebChromeClient(new WebChromeClient() {
+                      @Override
+                      public boolean onShowFileChooser(WebView w, ValueCallback<Uri[]> cb, FileChooserParams p) {
+                          if (fileCb != null) fileCb.onReceiveValue(null);
+                          fileCb = cb;
+                          try {
+                              startActivityForResult(p.createIntent(), FILE_REQ);
+                          } catch (Exception e) {
+                              fileCb = null;
+                              return false;
+                          }
+                          return true;
+                      }
+                  });
+
+                  readToken(getIntent());
+                  if (state != null) web.restoreState(state);
+                  else web.loadUrl(HOME);
+              }
+
+              @Override
+              protected void onSaveInstanceState(Bundle out) {
+                  super.onSaveInstanceState(out);
+                  web.saveState(out);
+              }
+
+              @Override
+              protected void onNewIntent(Intent intent) {
+                  super.onNewIntent(intent);
+                  setIntent(intent);
+                  readToken(intent);
+                  deliverToken();
+              }
+
+              void readToken(Intent i) {
+                  Uri d = i == null ? null : i.getData();
+                  if (d != null && "powerhaazriowner".equals(d.getScheme())) {
+                      String t = d.getQueryParameter("t");
+                      if (t != null && t.length() > 0) pendingToken = t;
+                  }
+              }
+
+              void deliverToken() {
+                  if (pendingToken == null) return;
+                  String js = "(function(){if(window.__onAuthToken){window.__onAuthToken(" + JSONObject.quote(pendingToken) + ");return true}return false})()";
+                  web.evaluateJavascript(js, v -> { if ("true".equals(v)) pendingToken = null; });
+              }
+
+              void openExternal(String u) {
+                  try {
+                      Intent i;
+                      if (u.startsWith("tel:")) i = new Intent(Intent.ACTION_DIAL, Uri.parse(u));
+                      else i = new Intent(Intent.ACTION_VIEW, Uri.parse(u));
+                      i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                      startActivity(i);
+                  } catch (ActivityNotFoundException e) {
+                      Toast.makeText(this, "Is link ke liye koi app nahi mili", Toast.LENGTH_LONG).show();
+                  }
+              }
+
+              @Override
+              protected void onActivityResult(int req, int res, Intent data) {
+                  if (req == FILE_REQ && fileCb != null) {
+                      fileCb.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(res, data));
+                      fileCb = null;
+                      return;
+                  }
+                  super.onActivityResult(req, res, data);
+              }
+
+              @Override
+              @SuppressWarnings("deprecation")
+              public void onBackPressed() {
+                  web.evaluateJavascript("(window.__back?window.__back():false)", v -> {
+                      if (!"true".equals(v)) {
+                          if (web.canGoBack()) web.goBack();
+                          else finish();
+                      }
+                  });
+              }
+
+              class Bridge {
+                  @JavascriptInterface
+                  public void openUrl(String u) { runOnUiThread(() -> openExternal(u)); }
+
+                  @JavascriptInterface
+                  public String pendingToken() {
+                      String t = pendingToken;
+                      pendingToken = null;
+                      return t == null ? "" : t;
+                  }
+
+                  @JavascriptInterface
+                  public void copy(String text) {
+                      runOnUiThread(() -> {
+                          ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                          if (cm != null) cm.setPrimaryClip(ClipData.newPlainText("Power Haazri", text));
+                      });
+                  }
+
+                  @JavascriptInterface
+                  public void saveFile(String name, String text) {
+                      try {
+                          byte[] b = text.getBytes(StandardCharsets.UTF_8);
+                          if (Build.VERSION.SDK_INT >= 29) {
+                              ContentValues cv = new ContentValues();
+                              cv.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
+                              cv.put(MediaStore.MediaColumns.MIME_TYPE, "text/csv");
+                              cv.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+                              Uri uri = getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, cv);
+                              try (OutputStream os = getContentResolver().openOutputStream(uri)) { os.write(b); }
+                              toast(name + " Downloads mein save ho gayi");
+                          } else {
+                              File f = new File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), name);
+                              try (FileOutputStream os = new FileOutputStream(f)) { os.write(b); }
+                              toast("Save: " + f.getAbsolutePath());
+                          }
+                      } catch (Exception e) {
+                          toast("File save nahi hui");
+                      }
+                  }
+
+                  void toast(String m) { runOnUiThread(() -> Toast.makeText(MainActivity.this, m, Toast.LENGTH_LONG).show()); }
+              }
+          }
+          PH_EOF
+          mkdir -p 'owner-apk/app/src/main/res/drawable'
+          cat > 'owner-apk/app/src/main/res/drawable/ic_fg.xml' <<'PH_EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <vector xmlns:android="http://schemas.android.com/apk/res/android"
+              android:width="108dp" android:height="108dp"
+              android:viewportWidth="108" android:viewportHeight="108">
+              <path android:fillColor="#00000000" android:strokeColor="#55E8A33D" android:strokeWidth="2"
+                  android:pathData="M54,31a23,23 0,1 1,-0.01 0z" />
+              <group android:translateX="25.2" android:translateY="24.6" android:scaleX="0.9" android:scaleY="0.9">
+                  <path android:fillColor="#E8A33D" android:pathData="M36,9L18,35h12l-3,20 19,-28H34z" />
+              </group>
+          </vector>
+          PH_EOF
+          mkdir -p 'owner-apk/app/src/main/res/mipmap-anydpi-v26'
+          cat > 'owner-apk/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml' <<'PH_EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+              <background android:drawable="@color/ic_bg" />
+              <foreground android:drawable="@drawable/ic_fg" />
+          </adaptive-icon>
+          PH_EOF
+          mkdir -p 'owner-apk/app/src/main/res/values-v27'
+          cat > 'owner-apk/app/src/main/res/values-v27/styles.xml' <<'PH_EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
+                  <item name="android:statusBarColor">#16233F</item>
+                  <item name="android:navigationBarColor">#FFFFFF</item>
+                  <item name="android:windowLightNavigationBar">true</item>
+                  <item name="android:windowBackground">@color/ic_bg</item>
+                  <item name="android:colorAccent">#E8A33D</item>
+              </style>
+          </resources>
+          PH_EOF
+          mkdir -p 'owner-apk/app/src/main/res/values'
+          cat > 'owner-apk/app/src/main/res/values/styles.xml' <<'PH_EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <color name="ic_bg">#16233F</color>
+              <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
+                  <item name="android:statusBarColor">#16233F</item>
+                  <item name="android:navigationBarColor">#16233F</item>
+                  <item name="android:windowBackground">@color/ic_bg</item>
+                  <item name="android:colorAccent">#E8A33D</item>
+              </style>
+          </resources>
+          PH_EOF
+          cat > 'owner-apk/build.gradle' <<'PH_EOF'
+          plugins { id 'com.android.application' version '8.5.2' apply false }
+          PH_EOF
+          cat > 'owner-apk/gradle.properties' <<'PH_EOF'
+          org.gradle.jvmargs=-Xmx2g
+          android.useAndroidX=false
+          android.nonTransitiveRClass=true
+          PH_EOF
+          cat > 'owner-apk/settings.gradle' <<'PH_EOF'
+          pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+          dependencyResolutionManagement { repositories { google(); mavenCentral() } }
+          rootProject.name = "PowerHaazriOwner"
+          include ':app'
+          PH_EOF
+
+      - name: APK build karein
+        working-directory: owner-apk
+        env:
+          APK_CODE: ${{ github.run_number }}
+        run: |
+          keytool -genkeypair -keystore app/owner.jks -storepass powerowner -keypass powerowner -alias owner -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Power Technology, O=Power Technology, L=Shinkiari, C=PK"
+          gradle assembleRelease --no-daemon --stacktrace
+          cp app/build/outputs/apk/release/app-release.apk ../PowerHaazri-Owner.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PowerHaazri-Owner-APK
+          path: PowerHaazri-Owner.apk
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: owner-apk-${{ github.run_number }}
+          name: Power Haazri Owner APK (build ${{ github.run_number }})
+          body: Power Haazri Owner panel ki Android app. Phone par download karke install karein.
+          files: PowerHaazri-Owner.apk
+          make_latest: true
