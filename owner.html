@@ -295,6 +295,7 @@ function render() {
         <button class="btn sm" data-a="date" data-id="${l.id}">Tareekh</button>
         ${l.life ? "" : `<button class="btn sm" data-a="life" data-id="${l.id}">Lifetime</button>`}
         <button class="btn sm" data-a="msg" data-id="${l.id}">Message</button>
+        <button class="btn sm gold" data-a="join" data-id="${l.id}">Join code</button>
         <button class="btn sm gold" data-a="view" data-id="${l.id}">Data dekhein</button>
         <button class="btn sm danger" data-a="reset" data-id="${l.id}">Reset</button>
         <button class="btn sm danger" data-a="del" data-id="${l.id}">Delete</button>
@@ -326,6 +327,7 @@ $("#schTable").onclick = e => {
     m.querySelector("#mOk").onclick = () => { save({ locked: true, message: m.querySelector("#mMsg").value.trim() }, "School lock ho gaya"); closeModal(); };
   }
   if (a === "view") viewSchool(l);
+  if (a === "join") joinCodeBox(l);
   if (a === "days") {
     const P = [["2 din", 2], ["7 din", 7], ["15 din", 15], ["1 mahina", 30], ["2 mahine", 60], ["3 mahine", 90], ["6 mahine", 180], ["1 saal", 365]];
     const cur = l.life ? "Lifetime" : l.validUntil ? fmt(l.validUntil.toMillis()) + " tak" : "—";
@@ -366,6 +368,42 @@ $("#schTable").onclick = e => {
     m.querySelector("#mOk").onclick = () => { save({ message: m.querySelector("#mMsg").value.trim() }, "Message save ho gaya"); closeModal(); };
   }
 };
+/* ---- Join code dekhna / WhatsApp par bhejna ---- */
+function genCode(n) { const c = "23456789ABCDEFGHJKMNPQRSTUVWXYZ"; return [...crypto.getRandomValues(new Uint8Array(n))].map(x => c[x % c.length]).join(""); }
+async function joinCodeBox(l) {
+  const m = modal(`<h3>Join code — ${esc(l.schoolName)}</h3><p class="muted">Load ho raha hai…</p>`);
+  let sc;
+  try { sc = await getDoc(doc(db, "schools", l.id)); }
+  catch (e) { m.innerHTML = `<h3>Join code load nahi hua</h3><p class="muted">${esc(e.code || e.message)}</p><button class="btn" id="mX">Band</button>`; m.querySelector("#mX").onclick = closeModal; return; }
+  const S2 = sc.data() || {};
+  let code = S2.joinCode || "";
+  const msgFor = () => `Assalam o Alaikum!\n${S2.schoolName || l.schoolName || "School"} — Power Haazri mein join karne ke liye:\n\nSchool ID: ${l.id}\nJoin code: ${code}\n\nApp: ${APP_URL}\n1) Apne Gmail se login karein\n2) "Mojooda school join" chunein\n3) School ID aur Join code darj karke "School join karein" dabayein.\n- Power Technology Shinkiari\n0310-5802297, 0333-9764399`;
+  m.innerHTML = `<h3>Join code — ${esc(S2.schoolName || l.schoolName)}</h3>
+    <p class="muted" style="margin:0 0 12px;font-size:.88rem">Naya admin/teacher yeh School ID aur Join code daal kar is school mein shamil ho sakta hai.</p>
+    <div class="keybox" style="margin-bottom:8px"><span class="muted">School ID</span><code>${esc(l.id)}</code></div>
+    <div class="keybox" style="margin-bottom:12px"><span class="muted">Join code</span><code id="jcShow">${esc(code || "—")}</code></div>
+    <label class="field"><span>WhatsApp number (jis ko bhejna hai)</span><input class="input" id="jcPh" value="${esc(S2.phone || l.phone || "")}" placeholder="03xx-xxxxxxx"></label>
+    <div class="acts" style="justify-content:flex-end;max-width:none">
+      <button class="btn sm danger" id="jcNew">Naya code banayein</button>
+      <button class="btn sm" id="jcCopy">Copy</button>
+      <button class="btn sm gold" id="jcWa">WhatsApp par bhejein</button>
+      <button class="btn sm" id="mX">Band</button>
+    </div>`;
+  m.querySelector("#mX").onclick = closeModal;
+  m.querySelector("#jcCopy").onclick = () => { if (!code) return toast("Is school ka join code nahi mila"); navigator.clipboard.writeText(msgFor()).then(() => toast("School ID, join code aur message copy ho gaye"), () => toast("Copy nahi hua")); };
+  m.querySelector("#jcWa").onclick = () => {
+    if (!code) return toast("Is school ka join code nahi mila — pehle 'Naya code banayein' dabayein");
+    const ph = normWa(m.querySelector("#jcPh").value);
+    if (ph.length < 11) return toast("Sahi WhatsApp number likhein");
+    window.open(`https://wa.me/${ph}?text=${encodeURIComponent(msgFor())}`, "_blank", "noopener");
+  };
+  m.querySelector("#jcNew").onclick = async () => {
+    if (code && !confirm("Naya code banane se purana code kaam nahi karega. Naya code banayein?")) return;
+    const nc = genCode(6);
+    try { await updateDoc(doc(db, "schools", l.id), { joinCode: nc }); code = nc; m.querySelector("#jcShow").textContent = nc; toast("Naya join code ban gaya"); }
+    catch (e) { toast("Code nahi badla: " + (e.code || e.message)); }
+  };
+}
 /* ---- School ka data dekhna ---- */
 const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
 const tm = ms => ms ? new Date(ms).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" }) : "";
